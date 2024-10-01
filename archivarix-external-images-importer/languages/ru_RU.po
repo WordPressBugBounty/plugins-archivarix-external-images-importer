@@ -1,0 +1,269 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-08-28 13:33+0200\n"
+"PO-Revision-Date: 2020-08-28 13:34+0200\n"
+"Last-Translator: Archivarix <hello@archivarix.com>\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:40
+msgid "Run background processing"
+msgstr "Запустить фоновую обработку"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:144
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:145
+msgid "Archivarix External Images Importer"
+msgstr "Archivarix Импорт Внешних Изображений"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:164
+msgid "Archivarix External Images Importer Settings"
+msgstr "Настройки для Archivarix Импорт Внешних Изображений"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:196
+msgid "Main"
+msgstr "Основные"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:202
+msgid "Post types"
+msgstr "Типы сообщений"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:216
+msgid "Image files"
+msgstr "Изображения"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:223
+msgid "Download settings"
+msgstr "Скачивание"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:230
+msgid "Statistics"
+msgstr "Статистика"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:257
+msgid "Base URL"
+msgstr "Базовый URL"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:262
+msgid "We recommend leaving its default value"
+msgstr "Рекомендуем не менять значение по умолчанию"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:266
+msgid "Exclude Domains"
+msgstr "Исключить домены"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:271
+msgid "Each value on a new line"
+msgstr "Каждое значение с новой строки"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:275
+msgid "Post types to scan"
+msgstr "Типы сообщений для сканирования"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:285
+msgid "Alt attribute"
+msgstr "Атрибут alt"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:290
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:299
+msgid ""
+"Available tags: %filename%, %random%, %timestamp%, %date%, %day%, %month%, "
+"%year%"
+msgstr ""
+"Доступные теги: %filename%, %random%, %timestamp%, %date%, %day%, %month%, "
+"%year%"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:294
+msgid "Filename"
+msgstr "Имя файла"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:303
+msgid "Max width"
+msgstr "Макс. ширина"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:308
+msgid "Resize image if width is larger"
+msgstr "Изменить размер изображения, если ширина больше"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:312
+msgid "Max height"
+msgstr "Макс. высота"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:317
+msgid "Resize image if height is larger"
+msgstr "Изменить размер изображения, если высота больше"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:321
+msgid "Images source"
+msgstr "Источник изображений"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:325
+msgid "From original links only"
+msgstr "Только с оригинальных ссылок"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:326
+msgid "From Web Archive only"
+msgstr "Только из Веб-Архива"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:327
+msgid "Try Web Archive first, then original"
+msgstr "Сначала Веб-Архив, потом оригиналы"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:328
+msgid "Try original links first, then Web Archive"
+msgstr "Сначала оригиналы, потом из Веб-Архива"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:336
+msgid "Failure action"
+msgstr "В случае неудачи"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:340
+msgid "Keep"
+msgstr "Оставить"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:341
+msgid "Remove"
+msgstr "Удалить"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:345
+msgid "If no external image found"
+msgstr "Если внешнее изображение не найдено"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:349
+msgid "Missing local images"
+msgstr "Отсутствующие локальные изображения"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:353
+msgid "Download"
+msgstr "Скачивать"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:354
+msgid "Ignore"
+msgstr "Игнорировать"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:358
+msgid "Try to restore missing images of local media library"
+msgstr "Скачивать отсутствующие изображения из локальной библиотеки"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:362
+msgid "Start downloading"
+msgstr "Начать скачивание"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:366
+msgid "Immediately"
+msgstr "Немедленно"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:367
+msgid "Put on queue"
+msgstr "Ставить в очередь"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:371
+msgid "Method of loading files when saving a post, immediately or after"
+msgstr "Скачивать изображения в момент сохранения поста или после"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:375
+msgid "Auto images import"
+msgstr "Автоматическое скачивание изображений"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:379
+msgid "Enabled"
+msgstr "Включено"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:380
+msgid "Disabled"
+msgstr "Отключено"
+
+#: src/ArchivarixExternalImagesImporter/Admin/Settings.php:384
+msgid "You can temporarily disable this plugin here"
+msgstr "Здесь вы можете временно отключить работу плагина"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Batch.php:65
+#, php-format
+msgid "Background download is running. %d images left."
+msgstr "Идёт скачивание в фоне. Осталось изображений: %d."
+
+#: src/ArchivarixExternalImagesImporter/Classes/Stats.php:37
+msgid "Last update:"
+msgstr "Последнее обновление:"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Stats.php:44
+msgid "Images on queue:"
+msgstr "Изображений в очереди:"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Stats.php:51
+msgid "Downloaded:"
+msgstr "Скачано:"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Stats.php:57
+msgid "From original source:"
+msgstr "С оригинальных источников:"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Stats.php:63
+msgid "From Web Archive:"
+msgstr "Из Веб-Архива:"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Stats.php:69
+msgid "Failed:"
+msgstr "Не удалось скачать:"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Stats.php:75
+msgid "Deleted:"
+msgstr "Удалено:"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Stats.php:81
+msgid "No data"
+msgstr "Нет данных"
+
+#: src/ArchivarixExternalImagesImporter/Classes/Uploader.php:35
+msgid "Invalid image URL"
+msgstr "Недопустимый URL-адрес изображения"
+
+#: src/ArchivarixExternalImagesImporter/Lib/WpBackgroundProcess.php:478
+#, php-format
+msgid "Every %d Minutes"
+msgstr "Каждые %d минут"
+
+#~ msgid "Time start of import:"
+#~ msgstr "Начало импорта:"
+
+#~ msgid "Number of images:"
+#~ msgstr "Изображений:"
+
+#~ msgid "Number of images downloaded:"
+#~ msgstr "Скачанных изображений:"
+
+#~ msgid "Number of images downloaded on source:"
+#~ msgstr "Изображений скачанных с оригинала:"
+
+#~ msgid "Number of images downloaded on web archive:"
+#~ msgstr "Изображений скачанных с Веб-Архива:"
+
+#~ msgid "Number of download errors:"
+#~ msgstr "Ошибок при скачивании:"
+
+#~ msgid "Number of deleted images:"
+#~ msgstr "Удалённых изображений:"
+
+#~ msgid "Download from"
+#~ msgstr "Скачивать с"
+
+#~ msgid "Domain settings"
+#~ msgstr "Настройки домена"
+
+#~ msgid "File settings"
+#~ msgstr "Настройки файлов"
+
+#~ msgid "Alt Name:"
+#~ msgstr "Значение alt:"
+
+#~ msgid "Image Name:"
+#~ msgstr "Имя файла:"
