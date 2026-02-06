@@ -1,0 +1,542 @@
+<?php
+/**
+ * WP Background Process
+ *
+ * Based on WP Background Processing library by deliciousbrains
+ * https://github.com/deliciousbrains/wp-background-processing
+ *
+ * @package Archivarix External Images Importer
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Abstract AEII_Background_Process class.
+ */
+abstract class AEII_Background_Process extends AEII_Async_Request {
+
+	/**
+	 * Action
+	 *
+	 * @var string
+	 */
+	protected $action = 'background_process';
+
+	/**
+	 * Start time of current process.
+	 *
+	 * @var int
+	 */
+	protected $start_time = 0;
+
+	/**
+	 * Cron_hook_identifier
+	 *
+	 * @var string
+	 */
+	protected $cron_hook_identifier;
+
+	/**
+	 * Cron_interval_identifier
+	 *
+	 * @var string
+	 */
+	protected $cron_interval_identifier;
+
+	/**
+	 * Cron interval in minutes
+	 *
+	 * @var int
+	 */
+	protected $cron_interval = 1;
+
+	/**
+	 * Time limit in seconds (default 20)
+	 *
+	 * @var int
+	 */
+	protected $time_limit = 20;
+
+	/**
+	 * Initiate new background process
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		$this->cron_hook_identifier     = $this->identifier . '_cron';
+		$this->cron_interval_identifier = $this->identifier . '_cron_interval';
+
+		add_action( $this->cron_hook_identifier, array( $this, 'handle_cron_healthcheck' ) );
+		// phpcs:ignore WordPress.WP.CronInterval.ChangeDetected
+		add_filter( 'cron_schedules', array( $this, 'schedule_cron_healthcheck' ) );
+	}
+
+	/**
+	 * Dispatch
+	 *
+	 * @return array|WP_Error
+	 */
+	public function dispatch() {
+		// Schedule the cron healthcheck.
+		$this->schedule_event();
+
+		// Perform remote post.
+		return parent::dispatch();
+	}
+
+	/**
+	 * Push to queue
+	 *
+	 * @param mixed $data Data.
+	 * @return $this
+	 */
+	public function push_to_queue( $data ) {
+		$this->data[] = $data;
+		return $this;
+	}
+
+	/**
+	 * Save queue
+	 *
+	 * @return $this
+	 */
+	public function save() {
+		$key = $this->generate_key();
+
+		if ( ! empty( $this->data ) ) {
+			update_site_option( $key, $this->data );
+		}
+
+		// Reset data for next batch.
+		$this->data = array();
+
+		return $this;
+	}
+
+	/**
+	 * Update queue
+	 *
+	 * @param string $key  Key.
+	 * @param array  $data Data.
+	 * @return $this
+	 */
+	public function update( $key, $data ) {
+		if ( ! empty( $data ) ) {
+			update_site_option( $key, $data );
+		}
+		return $this;
+	}
+
+	/**
+	 * Delete queue
+	 *
+	 * @param string $key Key.
+	 * @return $this
+	 */
+	public function delete( $key ) {
+		delete_site_option( $key );
+		return $this;
+	}
+
+	/**
+	 * Generate key
+	 *
+	 * @param int $length Length.
+	 * @return string
+	 */
+	protected function generate_key( $length = 64 ) {
+		$unique  = md5( microtime() . wp_rand() );
+		$prepend = $this->identifier . '_batch_';
+		return substr( $prepend . $unique, 0, $length );
+	}
+
+	/**
+	 * Maybe process queue
+	 */
+	public function maybe_handle() {
+		// Don't lock up other requests while processing.
+		session_write_close();
+
+		if ( $this->is_process_running() ) {
+			// Background process already running.
+			wp_die();
+		}
+
+		if ( $this->is_queue_empty() ) {
+			// No data to process.
+			wp_die();
+		}
+
+		check_ajax_referer( $this->identifier, 'nonce' );
+
+		$this->handle();
+
+		wp_die();
+	}
+
+	/**
+	 * Is queue empty
+	 *
+	 * @return bool
+	 */
+	public function is_queue_empty() {
+		global $wpdb;
+
+		$table  = $wpdb->options;
+		$column = 'option_name';
+
+		if ( is_multisite() ) {
+			$table  = $wpdb->sitemeta;
+			$column = 'meta_key';
+		}
+
+		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$table} WHERE {$column} LIKE %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$key
+			)
+		);
+
+		return ( $count > 0 ) ? false : true;
+	}
+
+	/**
+	 * Is process running
+	 *
+	 * @return bool
+	 */
+	public function is_process_running() {
+		if ( get_site_transient( $this->identifier . '_process_lock' ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Lock process
+	 */
+	protected function lock_process() {
+		$this->start_time = time();
+
+		$lock_duration = property_exists( $this, 'queue_lock_time' ) ? $this->queue_lock_time : 60;
+		$lock_duration = apply_filters( $this->identifier . '_queue_lock_time', $lock_duration );
+
+		set_site_transient( $this->identifier . '_process_lock', microtime(), $lock_duration );
+	}
+
+	/**
+	 * Unlock process
+	 *
+	 * @return $this
+	 */
+	protected function unlock_process() {
+		delete_site_transient( $this->identifier . '_process_lock' );
+		return $this;
+	}
+
+	/**
+	 * Get batch
+	 *
+	 * @return stdClass Return the first batch from the queue
+	 */
+	protected function get_batch() {
+		global $wpdb;
+
+		$table        = $wpdb->options;
+		$column       = 'option_name';
+		$key_column   = 'option_id';
+		$value_column = 'option_value';
+
+		if ( is_multisite() ) {
+			$table        = $wpdb->sitemeta;
+			$column       = 'meta_key';
+			$key_column   = 'meta_id';
+			$value_column = 'meta_value';
+		}
+
+		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$query = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM {$table} WHERE {$column} LIKE %s ORDER BY {$key_column} ASC LIMIT 1", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$key
+			)
+		);
+
+		$batch       = new stdClass();
+		$batch->key  = $query ? $query->$column : '';
+		$batch->data = $query ? maybe_unserialize( $query->$value_column ) : array();
+
+		return $batch;
+	}
+
+	/**
+	 * Handle
+	 *
+	 * Pass each queue item to the task handler, while remaining
+	 * within server memory and time limit constraints.
+	 */
+	protected function handle() {
+		$this->lock_process();
+
+		do {
+			$batch = $this->get_batch();
+
+			if ( empty( $batch->data ) ) {
+				break;
+			}
+
+			foreach ( $batch->data as $key => $value ) {
+				$task = $this->task( $value );
+
+				if ( false !== $task ) {
+					$batch->data[ $key ] = $task;
+				} else {
+					unset( $batch->data[ $key ] );
+				}
+
+				// Check limits after each task.
+				if ( $this->time_exceeded() || $this->memory_exceeded() ) {
+					break;
+				}
+			}
+
+			// Update or delete current batch.
+			if ( ! empty( $batch->data ) ) {
+				$this->update( $batch->key, $batch->data );
+			} else {
+				$this->delete( $batch->key );
+			}
+		} while ( ! $this->time_exceeded() && ! $this->memory_exceeded() && ! $this->is_queue_empty() );
+
+		$this->unlock_process();
+
+		// Start next batch or complete process.
+		if ( ! $this->is_queue_empty() ) {
+			$this->dispatch();
+		} else {
+			$this->complete();
+		}
+
+		wp_die();
+	}
+
+	/**
+	 * Memory exceeded
+	 *
+	 * @return bool
+	 */
+	protected function memory_exceeded() {
+		$memory_limit   = $this->get_memory_limit() * 0.7; // 70% of max memory
+		$current_memory = memory_get_usage( true );
+		$return         = false;
+
+		if ( $current_memory >= $memory_limit ) {
+			$return = true;
+		}
+
+		return apply_filters( $this->identifier . '_memory_exceeded', $return );
+	}
+
+	/**
+	 * Get memory limit in bytes.
+	 *
+	 * @return int
+	 */
+	protected function get_memory_limit() {
+		if ( function_exists( 'ini_get' ) ) {
+			$memory_limit = ini_get( 'memory_limit' );
+		} else {
+			$memory_limit = '128M';
+		}
+
+		if ( ! $memory_limit || -1 === intval( $memory_limit ) ) {
+			$memory_limit = '32000M';
+		}
+
+		return $this->convert_shorthand_to_bytes( $memory_limit );
+	}
+
+	/**
+	 * Converts a shorthand byte value to an integer byte value.
+	 *
+	 * @param string $value A (PHP ini) byte value.
+	 * @return int
+	 */
+	protected function convert_shorthand_to_bytes( $value ) {
+		$value = strtolower( trim( $value ) );
+		$bytes = (int) $value;
+
+		if ( false !== strpos( $value, 'g' ) ) {
+			$bytes *= 1024 * 1024 * 1024;
+		} elseif ( false !== strpos( $value, 'm' ) ) {
+			$bytes *= 1024 * 1024;
+		} elseif ( false !== strpos( $value, 'k' ) ) {
+			$bytes *= 1024;
+		}
+
+		return min( $bytes, PHP_INT_MAX );
+	}
+
+	/**
+	 * Time exceeded.
+	 *
+	 * @return bool
+	 */
+	protected function time_exceeded() {
+		$finish = $this->start_time + apply_filters( $this->identifier . '_default_time_limit', $this->time_limit );
+		$return = false;
+
+		if ( time() >= $finish ) {
+			$return = true;
+		}
+
+		return apply_filters( $this->identifier . '_time_exceeded', $return );
+	}
+
+	/**
+	 * Complete.
+	 */
+	protected function complete() {
+		// Unschedule the cron healthcheck.
+		$this->clear_scheduled_event();
+
+		// Set completion transient.
+		set_site_transient( $this->identifier . '_completed', time(), 60 );
+	}
+
+	/**
+	 * Check if process completed
+	 *
+	 * @return bool
+	 */
+	public function is_complete() {
+		$completed = get_site_transient( $this->identifier . '_completed' );
+		if ( $completed ) {
+			delete_site_transient( $this->identifier . '_completed' );
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Schedule cron healthcheck
+	 *
+	 * @param array $schedules Schedules.
+	 * @return array
+	 */
+	public function schedule_cron_healthcheck( $schedules ) {
+		$interval = apply_filters( $this->identifier . '_cron_interval', $this->cron_interval );
+
+		$schedules[ $this->cron_interval_identifier ] = array(
+			'interval' => MINUTE_IN_SECONDS * $interval,
+			/* translators: %d: number of minutes between cron runs */
+			'display'  => sprintf( __( 'Every %d Minutes', 'archivarix-external-images-importer' ), $interval ),
+		);
+
+		return $schedules;
+	}
+
+	/**
+	 * Handle cron healthcheck
+	 */
+	public function handle_cron_healthcheck() {
+		if ( $this->is_process_running() ) {
+			// Reschedule for later.
+			$this->schedule_event();
+			exit;
+		}
+
+		if ( $this->is_queue_empty() ) {
+			$this->clear_scheduled_event();
+			exit;
+		}
+
+		$this->handle();
+
+		exit;
+	}
+
+	/**
+	 * Schedule event - use single event to avoid schedule registration issues
+	 */
+	protected function schedule_event() {
+		$this->clear_scheduled_event();
+
+		$interval  = apply_filters( $this->identifier . '_cron_interval', $this->cron_interval );
+		$timestamp = time() + ( MINUTE_IN_SECONDS * $interval );
+
+		wp_schedule_single_event( $timestamp, $this->cron_hook_identifier );
+	}
+
+	/**
+	 * Clear scheduled event
+	 */
+	protected function clear_scheduled_event() {
+		$timestamp = wp_next_scheduled( $this->cron_hook_identifier );
+
+		if ( $timestamp ) {
+			wp_unschedule_event( $timestamp, $this->cron_hook_identifier );
+		}
+	}
+
+	/**
+	 * Cancel Process
+	 */
+	public function cancel_process() {
+		if ( ! $this->is_queue_empty() ) {
+			$batch = $this->get_batch();
+			$this->delete( $batch->key );
+		}
+
+		// Delete all batches.
+		$this->delete_all_batches();
+
+		wp_clear_scheduled_hook( $this->cron_hook_identifier );
+		$this->unlock_process();
+	}
+
+	/**
+	 * Delete all batches
+	 */
+	protected function delete_all_batches() {
+		global $wpdb;
+
+		$table  = $wpdb->options;
+		$column = 'option_name';
+
+		if ( is_multisite() ) {
+			$table  = $wpdb->sitemeta;
+			$column = 'meta_key';
+		}
+
+		$key = $wpdb->esc_like( $this->identifier . '_batch_' ) . '%';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$table} WHERE {$column} LIKE %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+				$key
+			)
+		);
+	}
+
+	/**
+	 * Task
+	 *
+	 * Override this method to perform any actions required on each
+	 * queue item. Return the modified item for further processing
+	 * in the next pass through. Or, return false to remove the
+	 * item from the queue.
+	 *
+	 * @param mixed $item Queue item to iterate over.
+	 * @return mixed
+	 */
+	abstract protected function task( $item );
+}

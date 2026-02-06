@@ -1,0 +1,414 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Archivarix External Images Importer 2.0.0\n"
+"Report-Msgid-Bugs-To: https://archivarix.com/\n"
+"POT-Creation-Date: 2025-01-21 12:00+0000\n"
+"PO-Revision-Date: 2025-01-21 12:00+0000\n"
+"Last-Translator: Archivarix <hello@archivarix.com>\n"
+"Language-Team: Spanish <es@li.org>\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Archivarix Translator\n"
+
+#: ../archivarix-external-images-importer.php:126, ../archivarix-external-images-importer.php:127
+msgid "Archivarix Images Importer"
+msgstr "Archivarix Importador de Imágenes"
+
+#: ../archivarix-external-images-importer.php:259
+msgid "Scanning..."
+msgstr "Escaneando..."
+
+#: ../archivarix-external-images-importer.php:260
+msgid "Error"
+msgstr "Error"
+
+#: ../archivarix-external-images-importer.php:261
+msgid "Start processing?"
+msgstr "¿Iniciar procesamiento?"
+
+#: ../archivarix-external-images-importer.php:262
+msgid "Reset all statistics and logs?"
+msgstr "¿Restablecer todas las estadísticas y registros?"
+
+#: ../archivarix-external-images-importer.php:263
+msgid "Delete selected logs?"
+msgstr "¿Eliminar registros seleccionados?"
+
+#: ../archivarix-external-images-importer.php:264
+msgid "No logs yet"
+msgstr "Sin registros aún"
+
+#: ../archivarix-external-images-importer.php:265
+msgid "Loading..."
+msgstr "Cargando..."
+
+#: ../archivarix-external-images-importer.php:266
+msgid "Copied!"
+msgstr "¡Copiado!"
+
+#: ../archivarix-external-images-importer.php:663
+msgid "Download failed"
+msgstr "Error de descarga"
+
+#: ../archivarix-external-images-importer.php:694
+msgid "Replaced with 1x1 placeholder"
+msgstr "Reemplazado con marcador 1x1"
+
+#: ../archivarix-external-images-importer.php:679
+msgid "Image removed from post"
+msgstr "Imagen eliminada de la entrada"
+
+#: ../archivarix-external-images-importer.php:797
+msgid "Image is being processed by another request"
+msgstr "La imagen está siendo procesada por otra solicitud"
+
+#. translators: %s: download source name (e.g., "Original", "Web Archive")
+#: ../archivarix-external-images-importer.php:842, ../archivarix-external-images-importer.php:1175
+msgid "Downloaded from %s"
+msgstr "Descargado de %s"
+
+#: ../archivarix-external-images-importer.php:888, ../archivarix-external-images-importer.php:898
+msgid "Used previously downloaded image"
+msgstr "Se usó imagen descargada anteriormente"
+
+#: ../archivarix-external-images-importer.php:917
+msgid "Previously failed, skipped"
+msgstr "Falló anteriormente, omitido"
+
+#: ../archivarix-external-images-importer.php:1078
+msgid "Could not download from any source"
+msgstr "No se pudo descargar de ninguna fuente"
+
+#: ../archivarix-external-images-importer.php:1107
+msgid "Used existing file from media library"
+msgstr "Se usó archivo existente de la biblioteca de medios"
+
+#: ../archivarix-external-images-importer.php:1125
+msgid "Could not save file"
+msgstr "No se pudo guardar el archivo"
+
+#: ../archivarix-external-images-importer.php:1260, ../archivarix-external-images-importer.php:1333
+msgid "Web Archive unavailable (500 error)"
+msgstr "Web Archive no disponible (error 500)"
+
+#. translators: %d: current retry attempt number (1-3).
+#: ../archivarix-external-images-importer.php:1274
+msgid "Web Archive rate limit (429). Retry %d/3 after delay."
+msgstr "Límite de Web Archive (429). Intento %d/3 después de espera."
+
+#: ../archivarix-external-images-importer.php:1281, ../archivarix-external-images-importer.php:1339
+msgid "Web Archive blocked - too many requests"
+msgstr "Web Archive bloqueado — demasiadas solicitudes"
+
+#: ../archivarix-external-images-importer.php:1405
+msgid ""
+"Web Archive is unavailable (500 Internal Server Error). Downloads will continue "
+"from original sources only."
+msgstr ""
+"Web Archive no está disponible (Error 500). Las descargas continuarán solo desde"
+" fuentes originales."
+
+#. translators: %d: current retry attempt number (1-3)
+#: ../archivarix-external-images-importer.php:1409
+msgid "Web Archive rate limit hit (429). Retry %d/3. Next attempt will be delayed."
+msgstr ""
+"Límite de Web Archive alcanzado (429). Intento %d/3. El siguiente intento se "
+"retrasará."
+
+#: ../archivarix-external-images-importer.php:1411
+msgid ""
+"Web Archive blocked due to too many requests (429). Downloads will continue from"
+" original sources only."
+msgstr ""
+"Web Archive bloqueado por demasiadas solicitudes (429). Las descargas "
+"continuarán solo desde fuentes originales."
+
+#: ../archivarix-external-images-importer.php:2050
+msgid "Permission denied"
+msgstr "Permiso denegado"
+
+#: ../archivarix-external-images-importer.php:2056
+msgid "No logs to download"
+msgstr "No hay registros para descargar"
+
+#. translators: %d: number of minutes between cron runs
+#: ../includes/class-aeii-background-process.php:440
+msgid "Every %d Minutes"
+msgstr "Cada %d minutos"
+
+#: ../templates/admin-page.php:17
+msgid "Settings"
+msgstr "Configuración"
+
+#: ../templates/admin-page.php:18, ../templates/admin-page.php:161
+msgid "Process"
+msgstr "Procesar"
+
+#: ../templates/admin-page.php:19
+msgid "Statistics"
+msgstr "Estadísticas"
+
+#: ../templates/admin-page.php:26
+msgid "Download Settings"
+msgstr "Configuración de descarga"
+
+#: ../templates/admin-page.php:29
+msgid "Download Mode"
+msgstr "Modo de descarga"
+
+#: ../templates/admin-page.php:32
+msgid "Original URL only"
+msgstr "Solo URL original"
+
+#: ../templates/admin-page.php:33
+msgid "Web Archive only"
+msgstr "Solo Web Archive"
+
+#: ../templates/admin-page.php:34
+msgid "Try original, then Web Archive"
+msgstr "Primero original, luego Web Archive"
+
+#: ../templates/admin-page.php:35
+msgid "Try Web Archive, then original"
+msgstr "Primero Web Archive, luego original"
+
+#: ../templates/admin-page.php:40
+msgid "Restore Local Missing"
+msgstr "Restaurar locales faltantes"
+
+#: ../templates/admin-page.php:43
+msgid "Include local images (from this domain) that return 404"
+msgstr "Incluir imágenes locales (de este dominio) que devuelven 404"
+
+#: ../templates/admin-page.php:45
+msgid ""
+"Keep checked if you want to restore ALL missing images, including those that "
+"were previously hosted on this same domain. Uncheck if you only want to import "
+"external images from other websites and skip broken local images."
+msgstr ""
+"Mantenga activado si desea restaurar TODAS las imágenes faltantes, incluyendo "
+"las que estaban en este mismo dominio. Desactive si solo quiere importar "
+"imágenes externas de otros sitios y omitir las locales rotas."
+
+#: ../templates/admin-page.php:50
+msgid "If Download Fails"
+msgstr "Si la descarga falla"
+
+#: ../templates/admin-page.php:53
+msgid "Keep image unchanged"
+msgstr "Mantener imagen sin cambios"
+
+#: ../templates/admin-page.php:54
+msgid "Remove image from post"
+msgstr "Eliminar imagen de la entrada"
+
+#: ../templates/admin-page.php:55
+msgid "Replace with 1x1 placeholder"
+msgstr "Reemplazar con marcador 1x1"
+
+#: ../templates/admin-page.php:60
+msgid "Post Types"
+msgstr "Tipos de contenido"
+
+#: ../templates/admin-page.php:86
+msgid "Select which post types to scan for external images."
+msgstr "Seleccione qué tipos de contenido escanear en busca de imágenes externas."
+
+#: ../templates/admin-page.php:91
+msgid "Naming Settings"
+msgstr "Configuración de nombres"
+
+#: ../templates/admin-page.php:94
+msgid "Keep Original Name"
+msgstr "Mantener nombre original"
+
+#: ../templates/admin-page.php:96
+msgid "Keep original filename"
+msgstr "Mantener nombre de archivo original"
+
+#: ../templates/admin-page.php:97
+msgid ""
+"Checked: use the original filename from the URL. Unchecked: rename files using "
+"the pattern below."
+msgstr ""
+"Activado: usar el nombre original del URL. Desactivado: renombrar archivos "
+"usando el patrón de abajo."
+
+#: ../templates/admin-page.php:101
+msgid "Filename Pattern"
+msgstr "Patrón de nombre"
+
+#: ../templates/admin-page.php:104
+msgid "Tags: {title} {post_id} {index} {date} {random}"
+msgstr "Etiquetas: {title} {post_id} {index} {date} {random}"
+
+#: ../templates/admin-page.php:109
+msgid "Connection Settings"
+msgstr "Configuración de conexión"
+
+#: ../templates/admin-page.php:112
+msgid "Download Delay"
+msgstr "Retraso de descarga"
+
+#: ../templates/admin-page.php:113, ../templates/admin-page.php:118
+msgid "seconds"
+msgstr "segundos"
+
+#: ../templates/admin-page.php:114
+msgid "Delay between requests."
+msgstr "Retraso entre solicitudes."
+
+#: ../templates/admin-page.php:117
+msgid "Timeout"
+msgstr "Tiempo de espera"
+
+#: ../templates/admin-page.php:119
+msgid "Request timeout. Increase if downloads fail on slow connections."
+msgstr "Tiempo de espera. Aumente si las descargas fallan en conexiones lentas."
+
+#: ../templates/admin-page.php:122
+msgid "User Agent"
+msgstr "User Agent"
+
+#: ../templates/admin-page.php:139
+msgid ""
+"Restore websites from the <strong>Wayback Machine</strong> with high accuracy. "
+"Download archived sites, remove ads and trackers, optimize images, and get a "
+"fully functional copy powered by the free <strong>Archivarix CMS</strong>. "
+"Trusted by thousands of users worldwide since 2017 for website recovery, "
+"migration, and SEO projects."
+msgstr ""
+"Restaure sitios web desde la <strong>Wayback Machine</strong> con alta "
+"precisión. Descargue sitios archivados, elimine anuncios y rastreadores, "
+"optimice imágenes y obtenga una copia totalmente funcional con el "
+"<strong>Archivarix CMS</strong> gratuito. Utilizado por miles de usuarios en "
+"todo el mundo desde 2017 para recuperación de sitios, migración y proyectos SEO."
+
+#: ../templates/admin-page.php:143
+msgid "Visit Website"
+msgstr "Visitar sitio web"
+
+#: ../templates/admin-page.php:144
+msgid "Documentation"
+msgstr "Documentación"
+
+#: ../templates/admin-page.php:150
+msgid "Process Images"
+msgstr "Procesar imágenes"
+
+#: ../templates/admin-page.php:152
+msgid "Step 1: Scan"
+msgstr "Paso 1: Escanear"
+
+#: ../templates/admin-page.php:153
+msgid "Scan all posts and pages to find external images and missing local images."
+msgstr ""
+"Escanear todas las entradas y páginas para encontrar imágenes externas y locales"
+" faltantes."
+
+#: ../templates/admin-page.php:154
+msgid "Start Scan"
+msgstr "Iniciar escaneo"
+
+#: ../templates/admin-page.php:158
+msgid "Step 2: Process"
+msgstr "Paso 2: Procesar"
+
+#: ../templates/admin-page.php:163
+msgid "You can close this page — processing continues on the server."
+msgstr "Puede cerrar esta página — el procesamiento continúa en el servidor."
+
+#: ../templates/admin-page.php:168
+msgid "Background processing running..."
+msgstr "Procesamiento en segundo plano en ejecución..."
+
+#: ../templates/admin-page.php:169
+msgid "Stop"
+msgstr "Detener"
+
+#: ../templates/admin-page.php:179
+msgid "Import Statistics"
+msgstr "Estadísticas de importación"
+
+#: ../templates/admin-page.php:182
+msgid "New Downloads"
+msgstr "Nuevas descargas"
+
+#: ../templates/admin-page.php:183
+msgid "Cached/Existing"
+msgstr "En caché/Existentes"
+
+#: ../templates/admin-page.php:184
+msgid "Failed"
+msgstr "Fallidas"
+
+#: ../templates/admin-page.php:185
+msgid "Removed"
+msgstr "Eliminadas"
+
+#: ../templates/admin-page.php:186
+msgid "Placeholder"
+msgstr "Marcador"
+
+#: ../templates/admin-page.php:188
+msgid "Reset Statistics"
+msgstr "Restablecer estadísticas"
+
+#: ../templates/admin-page.php:190
+msgid "Import Logs"
+msgstr "Registros de importación"
+
+#: ../templates/admin-page.php:192
+msgid "Sort:"
+msgstr "Ordenar:"
+
+#: ../templates/admin-page.php:192
+msgid "Newest first"
+msgstr "Más recientes primero"
+
+#: ../templates/admin-page.php:192
+msgid "Oldest first"
+msgstr "Más antiguos primero"
+
+#: ../templates/admin-page.php:193
+msgid "Refresh"
+msgstr "Actualizar"
+
+#: ../templates/admin-page.php:194
+msgid "Download Logs"
+msgstr "Descargar registros"
+
+#: ../templates/admin-page.php:195
+msgid "Delete Selected"
+msgstr "Eliminar seleccionados"
+
+#: ../templates/admin-page.php:196
+msgid "Delete All"
+msgstr "Eliminar todos"
+
+#: ../templates/admin-page.php:199
+msgid "Date"
+msgstr "Fecha"
+
+#: ../templates/admin-page.php:199
+msgid "Post"
+msgstr "Entrada"
+
+#: ../templates/admin-page.php:199
+msgid "Image"
+msgstr "Imagen"
+
+#: ../templates/admin-page.php:199
+msgid "Result"
+msgstr "Resultado"
+
+#: ../templates/admin-page.php:199
+msgid "Source/Action"
+msgstr "Fuente/Acción"
+
+#: ../templates/admin-page.php:200
+msgid "Click Refresh to load logs"
+msgstr "Haga clic en Actualizar para cargar registros"

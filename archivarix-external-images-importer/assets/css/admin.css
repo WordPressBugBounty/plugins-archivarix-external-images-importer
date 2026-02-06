@@ -1,0 +1,607 @@
+/**
+ * Admin CSS
+ * File: assets/css/admin.css
+ */
+
+/* Container */
+.aeii-admin-wrap {
+    max-width: 1000px;
+}
+
+.aeii-admin-container {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    margin-top: 20px;
+}
+
+/* Tabs */
+.nav-tab-wrapper {
+    border-bottom: 1px solid #c3c4c7;
+    padding-left: 10px;
+    background: #f6f7f7;
+}
+
+.aeii-tab-content {
+    display: none;
+    padding: 20px;
+}
+
+.aeii-tab-content.active {
+    display: block;
+}
+
+.aeii-step {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f9f9f9;
+}
+
+.aeii-step h3 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.aeii-results {
+    margin-top: 15px;
+}
+
+/* Process Options - improved layout */
+.aeii-process-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.aeii-process-option {
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.aeii-process-option .button {
+    margin-bottom: 10px;
+}
+
+.aeii-process-option .description {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #646970;
+}
+
+/* Stop Buttons - Red */
+.aeii-stop-btn,
+#aeii-stop-background-btn {
+    background: #d63638 !important;
+    border-color: #d63638 !important;
+    color: #fff !important;
+}
+
+.aeii-stop-btn:hover,
+#aeii-stop-background-btn:hover {
+    background: #b32d2e !important;
+    border-color: #b32d2e !important;
+    color: #fff !important;
+}
+
+.aeii-stop-btn:focus,
+#aeii-stop-background-btn:focus {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 3px #d63638 !important;
+}
+
+/* Background Status */
+.aeii-background-status {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #fff8e5;
+    border-left: 4px solid #dba617;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.aeii-status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #dba617;
+    animation: pulse 1.5s infinite;
+}
+
+.aeii-status-indicator.running {
+    background: #00a32a;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Scan Results */
+.aeii-scan-summary {
+    padding: 15px;
+    border-left: 4px solid #2271b1;
+    background: #f0f6fc;
+}
+
+.aeii-scan-summary.success {
+    border-left-color: #00a32a;
+    background: #edfaef;
+}
+
+.aeii-scan-summary h4 {
+    margin: 0 0 10px 0;
+    color: #1d2327;
+}
+
+.aeii-scan-summary ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.aeii-scan-summary li {
+    margin: 5px 0;
+}
+
+/* Progress Bar */
+.aeii-progress-container {
+    margin-top: 20px;
+}
+
+.aeii-progress-bar {
+    height: 20px;
+    background: #dcdcde;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.aeii-progress-fill {
+    height: 100%;
+    background: #2271b1;
+    transition: width 0.3s ease;
+    width: 0;
+}
+
+.aeii-progress-text {
+    text-align: center;
+    margin-top: 8px;
+    font-weight: 500;
+    color: #1d2327;
+    font-size: 13px;
+}
+
+/* Error Messages */
+.aeii-error {
+    padding: 12px 15px;
+    border-left: 4px solid #d63638;
+    background: #fcf0f1;
+    color: #d63638;
+}
+
+/* Statistics - Small Cards */
+.aeii-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.aeii-stat-card {
+    padding: 12px 10px;
+    background: #2271b1;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.aeii-stat-card.success {
+    background: #00a32a;
+}
+
+.aeii-stat-card.cached {
+    background: #72aee6;
+}
+
+.aeii-stat-card.failed {
+    background: #d63638;
+}
+
+.aeii-stat-card.removed {
+    background: #8c8f94;
+}
+
+.aeii-stat-card.placeholder {
+    background: #dba617;
+}
+
+.aeii-stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.aeii-stat-label {
+    font-size: 11px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Logs Table */
+.aeii-logs-toolbar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.aeii-logs-toolbar label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.aeii-log-row.success td {
+    background: #f0fff0;
+}
+
+.aeii-log-row.error td {
+    background: #fff8f8;
+}
+
+.aeii-status-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.aeii-status-badge.success {
+    background: #00a32a;
+    color: #fff;
+}
+
+.aeii-status-badge.error {
+    background: #d63638;
+    color: #fff;
+}
+
+/* Pagination */
+.aeii-logs-pagination {
+    margin-top: 15px;
+}
+
+.aeii-pagination-wrapper {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.aeii-pagination-info {
+    margin-right: 10px;
+    color: #666;
+    font-size: 13px;
+}
+
+.aeii-pagination-ellipsis {
+    padding: 0 5px;
+    color: #666;
+}
+
+.aeii-page-btn.active {
+    background: #2271b1;
+    color: #fff;
+    border-color: #2271b1;
+}
+
+.aeii-page-btn,
+.aeii-page-prev,
+.aeii-page-next,
+.aeii-page-first,
+.aeii-page-last {
+    min-width: 32px;
+    text-align: center;
+}
+
+.aeii-page-prev,
+.aeii-page-next,
+.aeii-page-first,
+.aeii-page-last {
+    font-weight: bold;
+}
+
+/* Copyable URL */
+.aeii-copyable-url {
+    cursor: pointer;
+    color: #2271b1;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    position: relative;
+    word-break: break-all;
+}
+
+.aeii-copyable-url:hover {
+    color: #135e96;
+    text-decoration-style: solid;
+}
+
+/* Copied Tooltip */
+.aeii-copied-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1d2327;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    white-space: nowrap;
+    z-index: 1000;
+    animation: fadeInUp 0.2s ease;
+}
+
+.aeii-copied-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1d2327;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Source Link */
+.aeii-source-link {
+    color: #2271b1;
+    text-decoration: none;
+}
+
+.aeii-source-link:hover {
+    color: #135e96;
+    text-decoration: underline;
+}
+
+/* Archivarix Promo Section */
+.aeii-archivarix-promo {
+    margin-top: 30px;
+    padding: 16px 20px;
+    background: #fff9f0;
+    border: 1px solid #ffe0b2;
+    border-radius: 6px;
+    border-left: 4px solid #ffa700;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.aeii-promo-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.aeii-promo-logo:hover {
+    opacity: 0.85;
+}
+
+.aeii-promo-logo svg {
+    width: 36px;
+    height: 36px;
+}
+
+.aeii-promo-logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1d2327;
+    letter-spacing: 0.5px;
+}
+
+.aeii-promo-content {
+    flex: 1;
+    min-width: 280px;
+}
+
+.aeii-promo-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #50575e;
+    margin: 0;
+}
+
+.aeii-promo-text strong {
+    color: #d97706;
+}
+
+.aeii-promo-links {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.aeii-promo-links .button {
+    text-decoration: none;
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+.aeii-promo-links .button-primary {
+    background: #ffa700;
+    border-color: #e69500;
+    color: #fff;
+}
+
+.aeii-promo-links .button-primary:hover {
+    background: #e69500;
+    border-color: #cc8400;
+    color: #fff;
+}
+
+/* Web Archive Error Alert */
+.aeii-archive-error {
+    background: #fcf0f0;
+    border: 1px solid #d63638;
+    border-left: 4px solid #d63638;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    color: #8a1c1c;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.aeii-archive-error strong {
+    color: #d63638;
+}
+
+.aeii-archive-error.warning {
+    background: #fff8e5;
+    border-color: #dba617;
+    color: #6e4e00;
+}
+
+.aeii-archive-error.warning strong {
+    color: #996800;
+}
+
+/* Spinner */
+.aeii-spinner {
+    width: 24px;
+    height: 24px;
+    margin: 15px auto;
+    border: 3px solid #dcdcde;
+    border-top-color: #2271b1;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Form improvements */
+.form-table th {
+    padding: 12px 10px 12px 0;
+    font-size: 13px;
+}
+
+/* Disabled buttons - ensure they appear gray */
+#aeii-scan-btn:disabled,
+#aeii-scan-btn.disabled,
+#aeii-process-btn:disabled,
+#aeii-process-btn.disabled {
+    background: #f0f0f1 !important;
+    border-color: #c3c4c7 !important;
+    color: #a7aaad !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+    box-shadow: none !important;
+}
+
+.form-table td {
+    padding: 8px 10px;
+}
+
+.form-table .description {
+    color: #646970;
+    font-size: 12px;
+    margin-top: 8px;
+    line-height: 1.6;
+}
+
+.form-table .description strong {
+    color: #1d2327;
+}
+
+.form-table code {
+    background: #f0f0f1;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+/* Step description */
+.aeii-step > .description {
+    margin: 0 0 15px 0;
+    color: #646970;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+    .aeii-stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .aeii-stat-value {
+        font-size: 20px;
+    }
+    
+    .aeii-log-entry {
+        flex-direction: column;
+        gap: 3px;
+    }
+    
+    .aeii-logs-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .aeii-pagination-wrapper {
+        justify-content: center;
+    }
+    
+    .aeii-process-option {
+        padding: 12px;
+    }
+    
+    .aeii-archivarix-promo {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+    }
+    
+    .aeii-promo-content {
+        min-width: auto;
+    }
+    
+    .aeii-promo-links {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .aeii-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .aeii-page-btn {
+        min-width: 28px;
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+    
+    .aeii-promo-logo-text {
+        font-size: 16px;
+    }
+}
