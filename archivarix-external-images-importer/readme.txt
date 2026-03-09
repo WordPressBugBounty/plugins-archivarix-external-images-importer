@@ -4,7 +4,7 @@ Tags: images, import, wayback, archive, media
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -92,6 +92,10 @@ Yes! Processing runs in the background on the server. You can close the browser 
 3. Statistics panel with detailed import information and logs
 
 == Changelog ==
+
+= 2.0.3 (2026-03-09) =
+* Fixed local 404 detection when site uses mixed http/https URLs
+* Fixed SVG placeholder filtering for lazy-load images
 
 = 2.0.2 (2026-03-09) =
 * Added French, Portuguese, and German translations

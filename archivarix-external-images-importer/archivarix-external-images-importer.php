@@ -3,7 +3,7 @@
  * Plugin Name: Archivarix External Images Importer
  * Plugin URI: https://archivarix.com/en/wordpress/
  * Description: Import external images in posts and pages from external sources or Web Archive if original source is unavailable.
- * Version: 2.0.2
+ * Version: 2.0.3
  * Author: Archivarix
  * Author URI: https://archivarix.com
  * License: GPLv3 or later
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AEII_VERSION', '2.0.2' );
+define( 'AEII_VERSION', '2.0.3' );
 define( 'AEII_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AEII_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AEII_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -430,8 +430,8 @@ class Archivarix_External_Images_Importer {
 	 * @param bool   $check_local Whether to check local images.
 	 */
 	private function add_image_to_list( &$images, $url, $site_host, $check_local ) {
-		// Skip data URIs (with or without "data:" scheme prefix).
-		if ( strpos( $url, 'data:' ) === 0 || preg_match( '/^image\/[a-z]/i', $url ) ) {
+		// Skip data URIs (with or without "data:" scheme prefix, with or without leading slash).
+		if ( strpos( $url, 'data:' ) === 0 || preg_match( '/^\/?image\/[a-z]/i', $url ) ) {
 			return;
 		}
 		if ( isset( $images[ $url ] ) ) {
@@ -476,14 +476,18 @@ class Archivarix_External_Images_Importer {
 	 * @return bool
 	 */
 	private function is_local_missing( $url ) {
-		$upload_dir = wp_upload_dir();
-		if ( strpos( $url, $upload_dir['baseurl'] ) === 0 ) {
-			$path = $upload_dir['basedir'] . str_replace( $upload_dir['baseurl'], '', $url );
+		// Normalize URL and base URLs to be protocol-agnostic (http vs https).
+		$norm_url    = preg_replace( '/^https?:\/\//', '//', $url );
+		$upload_dir  = wp_upload_dir();
+		$norm_upload = preg_replace( '/^https?:\/\//', '//', $upload_dir['baseurl'] );
+		if ( strpos( $norm_url, $norm_upload ) === 0 ) {
+			$path = $upload_dir['basedir'] . str_replace( $norm_upload, '', $norm_url );
 			return ! file_exists( $path );
 		}
-		$site_url = get_site_url();
-		if ( strpos( $url, $site_url ) === 0 ) {
-			$path = ABSPATH . ltrim( str_replace( $site_url, '', $url ), '/' );
+		$site_url      = get_site_url();
+		$norm_site_url = preg_replace( '/^https?:\/\//', '//', $site_url );
+		if ( strpos( $norm_url, $norm_site_url ) === 0 ) {
+			$path = ABSPATH . ltrim( str_replace( $norm_site_url, '', $norm_url ), '/' );
 			return ! file_exists( $path );
 		}
 		return false;
