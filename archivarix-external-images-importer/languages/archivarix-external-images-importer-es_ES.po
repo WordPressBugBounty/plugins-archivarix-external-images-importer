@@ -412,3 +412,52 @@ msgstr "Fuente/Acción"
 #: ../templates/admin-page.php:200
 msgid "Click Refresh to load logs"
 msgstr "Haga clic en Actualizar para cargar registros"
+
+#: ../archivarix-external-images-importer.php
+msgid "Scan Complete"
+msgstr "Escaneo completado"
+
+#: ../archivarix-external-images-importer.php
+msgid "Posts"
+msgstr "Entradas"
+
+#: ../archivarix-external-images-importer.php
+msgid "Images to process"
+msgstr "Imágenes a procesar"
+
+#: ../archivarix-external-images-importer.php
+msgid "External"
+msgstr "Externas"
+
+#: ../archivarix-external-images-importer.php
+msgid "Local 404"
+msgstr "Locales 404"
+
+#: ../archivarix-external-images-importer.php
+msgid "Invalid URLs"
+msgstr "URLs inválidas"
+
+#: ../archivarix-external-images-importer.php
+msgid "Error loading logs"
+msgstr "Error al cargar los registros"
+
+#: ../archivarix-external-images-importer.php
+msgid "Delete ALL logs?"
+msgstr "¿Eliminar TODOS los registros?"
+
+#. translators: %1$d: current page number, %2$d: total pages
+#: ../archivarix-external-images-importer.php
+msgid "Page %1$d of %2$d"
+msgstr "Página %1$d de %2$d"
+
+#: ../archivarix-external-images-importer.php
+msgid "Web Archive is currently unavailable. Downloads will continue from original sources only."
+msgstr "Web Archive no está disponible actualmente. Las descargas continuarán solo desde las fuentes originales."
+
+#: ../archivarix-external-images-importer.php
+msgid "Next request will be delayed by 10 seconds."
+msgstr "La siguiente solicitud se retrasará 10 segundos."
+
+#: ../archivarix-external-images-importer.php
+msgid "Too many requests. Web Archive access has been disabled. Downloads will continue from original sources only."
+msgstr "Demasiadas solicitudes. El acceso a Web Archive ha sido deshabilitado. Las descargas continuarán solo desde las fuentes originales."

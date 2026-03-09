@@ -43,8 +43,7 @@ class AEII_Images_Process extends AEII_Background_Process {
 	 */
 	protected function task( $item ) {
 		// Handle both array and serialized data.
-		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize, WordPress.PHP.NoSilencedErrors.Discouraged
-		$data = is_string( $item ) ? @unserialize( $item ) : $item;
+		$data = is_string( $item ) ? maybe_unserialize( $item ) : $item;
 
 		if ( empty( $data ) || empty( $data['url'] ) || empty( $data['post_id'] ) ) {
 			return false; // Invalid data, remove from queue.

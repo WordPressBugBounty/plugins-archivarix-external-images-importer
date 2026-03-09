@@ -37,13 +37,13 @@
             
             $.post(aeiiData.ajax_url, {action: 'aeii_scan_posts', nonce: aeiiData.nonce}, function(r) {
                 if (r.success) {
-                    let summary = '<div class="aeii-scan-summary success"><h4>✓ Scan Complete</h4><ul>' +
-                        '<li>Posts: ' + r.data.total_posts + '</li>' +
-                        '<li>Images to process: ' + r.data.total_images + '</li>' +
-                        '<li>External: ' + r.data.external_images + '</li>' +
-                        '<li>Local 404: ' + r.data.local_missing_images + '</li>';
+                    let summary = '<div class="aeii-scan-summary success"><h4>✓ ' + esc(aeiiData.strings.scan_complete) + '</h4><ul>' +
+                        '<li>' + esc(aeiiData.strings.posts) + ': ' + r.data.total_posts + '</li>' +
+                        '<li>' + esc(aeiiData.strings.images_to_process) + ': ' + r.data.total_images + '</li>' +
+                        '<li>' + esc(aeiiData.strings.external) + ': ' + r.data.external_images + '</li>' +
+                        '<li>' + esc(aeiiData.strings.local_404) + ': ' + r.data.local_missing_images + '</li>';
                     if (r.data.invalid_urls > 0) {
-                        summary += '<li>Invalid URLs: ' + r.data.invalid_urls + '</li>';
+                        summary += '<li>' + esc(aeiiData.strings.invalid_urls) + ': ' + r.data.invalid_urls + '</li>';
                     }
                     summary += '</ul></div>';
                     $res.html(summary);
@@ -52,14 +52,14 @@
                         $('#aeii-process-btn').removeClass('disabled');
                     }
                 } else {
-                    $res.html('<div class="aeii-error">' + esc(r.data?.message || 'Error') + '</div>');
+                    $res.html('<div class="aeii-error">' + esc(r.data?.message || aeiiData.strings.error) + '</div>');
                 }
             }).fail(function() {
                 $res.html('<div class="aeii-error">' + aeiiData.strings.error + '</div>');
             }).always(function() {
                 // Only re-enable if not processing
                 if (!backgroundRunning) {
-                    $btn.prop('disabled', false).removeClass('disabled').text('Start Scan');
+                    $btn.prop('disabled', false).removeClass('disabled').text(aeiiData.strings.start_scan);
                 }
             });
         });
@@ -80,7 +80,7 @@
                     $('#aeii-scan-btn').prop('disabled', true).addClass('disabled');
                     pollBackground();
                 } else {
-                    alert(r.data?.message || 'Error');
+                    alert(r.data?.message || aeiiData.strings.error);
                     $btn.prop('disabled', false).removeClass('disabled');
                 }
             });
@@ -166,17 +166,17 @@
         
         switch (errorStatus.type) {
             case '500':
-                message = '<strong>⚠ Web Archive Error (500):</strong> Web Archive is currently unavailable. Downloads will continue from original sources only.';
+                message = '<strong>⚠ Web Archive Error (500):</strong> ' + esc(aeiiData.strings.archive_error_500);
                 break;
             case '429_retry':
-                message = '<strong>⏳ Web Archive Rate Limit (429):</strong> ' + esc(errorStatus.message) + ' Next request will be delayed by 10 seconds.';
+                message = '<strong>⏳ Web Archive Rate Limit (429):</strong> ' + esc(errorStatus.message) + ' ' + esc(aeiiData.strings.archive_429_retry);
                 isWarning = true;
                 break;
             case '429_blocked':
-                message = '<strong>⛔ Web Archive Blocked (429):</strong> Too many requests. Web Archive access has been disabled. Downloads will continue from original sources only.';
+                message = '<strong>⛔ Web Archive Blocked (429):</strong> ' + esc(aeiiData.strings.archive_429_blocked);
                 break;
             default:
-                message = esc(errorStatus.message) || 'Unknown Web Archive error';
+                message = esc(errorStatus.message) || esc(aeiiData.strings.error);
         }
         
         $alert
@@ -239,7 +239,7 @@
         });
         
         $('#aeii-delete-all-logs-btn').on('click', function() {
-            if (confirm('Delete ALL logs?')) deleteLogs([], true);
+            if (confirm(aeiiData.strings.confirm_delete_all)) deleteLogs([], true);
         });
         
         // Click on image URL - copy to clipboard
@@ -257,7 +257,7 @@
 
     function loadLogs() {
         const $body = $('#aeii-logs-body');
-        $body.html('<tr><td colspan="6">' + aeiiData.strings.loading + '</td></tr>');
+        $body.html('<tr><td colspan="7">' + aeiiData.strings.loading + '</td></tr>');
         
         $.post(aeiiData.ajax_url, {
             action: 'aeii_get_logs',
@@ -268,10 +268,10 @@
             if (r.success) {
                 renderLogs(r.data);
             } else {
-                $body.html('<tr><td colspan="6">Error loading logs</td></tr>');
+                $body.html('<tr><td colspan="7">' + aeiiData.strings.error_loading_logs + '</td></tr>');
             }
         }).fail(function() {
-            $body.html('<tr><td colspan="6">Error loading logs</td></tr>');
+            $body.html('<tr><td colspan="7">' + aeiiData.strings.error_loading_logs + '</td></tr>');
         });
     }
 
@@ -372,7 +372,7 @@
         let html = '<div class="aeii-pagination-wrapper">';
         
         // Current position info
-        html += '<span class="aeii-pagination-info">Page ' + currentPage + ' of ' + totalPages + '</span>';
+        html += '<span class="aeii-pagination-info">' + aeiiData.strings.page_of.replace('%1$d', currentPage).replace('%2$d', totalPages) + '</span>';
         
         // "First" button
         if (currentPage > 1) {

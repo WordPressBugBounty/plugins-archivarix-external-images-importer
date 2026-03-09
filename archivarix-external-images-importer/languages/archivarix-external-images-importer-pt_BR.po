@@ -2,186 +2,186 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Archivarix External Images Importer 2.0.0\n"
 "Report-Msgid-Bugs-To: https://archivarix.com/\n"
-"POT-Creation-Date: 2025-01-21 12:00+0000\n"
-"PO-Revision-Date: 2025-01-21 12:00+0000\n"
+"POT-Creation-Date: 2026-02-05 20:46+0000\n"
+"PO-Revision-Date: 2026-03-09 12:00+0000\n"
 "Last-Translator: Archivarix <hello@archivarix.com>\n"
-"Language-Team: Russian <ru@li.org>\n"
-"Language: ru_RU\n"
+"Language-Team: Portuguese (Brazil) <pt_BR@li.org>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Archivarix Translator\n"
 
 #: ../archivarix-external-images-importer.php:126, ../archivarix-external-images-importer.php:127
 msgid "Archivarix Images Importer"
-msgstr "Archivarix Импорт изображений"
+msgstr "Archivarix Importador de Imagens"
 
 #: ../archivarix-external-images-importer.php:259
 msgid "Scanning..."
-msgstr "Сканирование..."
+msgstr "Escaneando..."
 
 #: ../archivarix-external-images-importer.php:260
 msgid "Error"
-msgstr "Ошибка"
+msgstr "Erro"
 
 #: ../archivarix-external-images-importer.php:261
 msgid "Start processing?"
-msgstr "Начать обработку?"
+msgstr "Iniciar processamento?"
 
 #: ../archivarix-external-images-importer.php:262
 msgid "Reset all statistics and logs?"
-msgstr "Сбросить всю статистику и логи?"
+msgstr "Redefinir todas as estatísticas e registros?"
 
 #: ../archivarix-external-images-importer.php:263
 msgid "Delete selected logs?"
-msgstr "Удалить выбранные логи?"
+msgstr "Excluir registros selecionados?"
 
 #: ../archivarix-external-images-importer.php:264
 msgid "No logs yet"
-msgstr "Логов пока нет"
+msgstr "Nenhum registro ainda"
 
 #: ../archivarix-external-images-importer.php:265
 msgid "Loading..."
-msgstr "Загрузка..."
+msgstr "Carregando..."
 
 #: ../archivarix-external-images-importer.php:266
 msgid "Copied!"
-msgstr "Скопировано!"
+msgstr "Copiado!"
 
 #: ../archivarix-external-images-importer.php:663
 msgid "Download failed"
-msgstr "Ошибка скачивания"
+msgstr "Falha no download"
 
 #: ../archivarix-external-images-importer.php:694
 msgid "Replaced with 1x1 placeholder"
-msgstr "Заменено на заглушку 1x1"
+msgstr "Substituído por marcador 1x1"
 
 #: ../archivarix-external-images-importer.php:679
 msgid "Image removed from post"
-msgstr "Изображение удалено из записи"
+msgstr "Imagem removida do post"
 
 #: ../archivarix-external-images-importer.php:797
 msgid "Image is being processed by another request"
-msgstr "Изображение обрабатывается другим запросом"
+msgstr "A imagem está sendo processada por outra requisição"
 
 #. translators: %s: download source name (e.g., "Original", "Web Archive")
 #: ../archivarix-external-images-importer.php:842, ../archivarix-external-images-importer.php:1175
 msgid "Downloaded from %s"
-msgstr "Скачано из %s"
+msgstr "Baixado de %s"
 
 #: ../archivarix-external-images-importer.php:888, ../archivarix-external-images-importer.php:898
 msgid "Used previously downloaded image"
-msgstr "Использовано ранее скачанное изображение"
+msgstr "Imagem baixada anteriormente utilizada"
 
 #: ../archivarix-external-images-importer.php:917
 msgid "Previously failed, skipped"
-msgstr "Ранее не удалось, пропущено"
+msgstr "Falhou anteriormente, ignorado"
 
 #: ../archivarix-external-images-importer.php:1078
 msgid "Could not download from any source"
-msgstr "Не удалось скачать ни из одного источника"
+msgstr "Não foi possível baixar de nenhuma fonte"
 
 #: ../archivarix-external-images-importer.php:1107
 msgid "Used existing file from media library"
-msgstr "Использован существующий файл из медиабиблиотеки"
+msgstr "Arquivo existente da biblioteca de mídia utilizado"
 
 #: ../archivarix-external-images-importer.php:1125
 msgid "Could not save file"
-msgstr "Не удалось сохранить файл"
+msgstr "Não foi possível salvar o arquivo"
 
 #: ../archivarix-external-images-importer.php:1260, ../archivarix-external-images-importer.php:1333
 msgid "Web Archive unavailable (500 error)"
-msgstr "Веб-Архив недоступен (ошибка 500)"
+msgstr "Web Archive indisponível (erro 500)"
 
 #. translators: %d: current retry attempt number (1-3).
 #: ../archivarix-external-images-importer.php:1274
 msgid "Web Archive rate limit (429). Retry %d/3 after delay."
-msgstr "Лимит Веб-Архива (429). Попытка %d/3 после задержки."
+msgstr "Limite de requisições do Web Archive (429). Tentativa %d/3 após espera."
 
 #: ../archivarix-external-images-importer.php:1281, ../archivarix-external-images-importer.php:1339
 msgid "Web Archive blocked - too many requests"
-msgstr "Веб-Архив заблокирован — слишком много запросов"
+msgstr "Web Archive bloqueado — muitas requisições"
 
 #: ../archivarix-external-images-importer.php:1405
 msgid ""
 "Web Archive is unavailable (500 Internal Server Error). Downloads will continue "
 "from original sources only."
 msgstr ""
-"Веб-Архив недоступен (ошибка 500). Загрузка продолжится только из оригинальных "
-"источников."
+"Web Archive está indisponível (erro 500). Os downloads continuarão apenas das "
+"fontes originais."
 
 #. translators: %d: current retry attempt number (1-3)
 #: ../archivarix-external-images-importer.php:1409
 msgid "Web Archive rate limit hit (429). Retry %d/3. Next attempt will be delayed."
 msgstr ""
-"Превышен лимит запросов к Веб-Архиву (429). Попытка %d/3. Следующий запрос будет"
-" отложен."
+"Limite de requisições do Web Archive atingido (429). Tentativa %d/3. A próxima "
+"tentativa será atrasada."
 
 #: ../archivarix-external-images-importer.php:1411
 msgid ""
 "Web Archive blocked due to too many requests (429). Downloads will continue from"
 " original sources only."
 msgstr ""
-"Веб-Архив заблокирован из-за слишком большого количества запросов (429). "
-"Загрузка продолжится только из оригинальных источников."
+"Web Archive bloqueado devido a muitas requisições (429). Os downloads "
+"continuarão apenas das fontes originais."
 
 #: ../archivarix-external-images-importer.php:2050
 msgid "Permission denied"
-msgstr "Доступ запрещён"
+msgstr "Permissão negada"
 
 #: ../archivarix-external-images-importer.php:2056
 msgid "No logs to download"
-msgstr "Нет логов для скачивания"
+msgstr "Nenhum registro para baixar"
 
 #. translators: %d: number of minutes between cron runs
 #: ../includes/class-aeii-background-process.php:440
 msgid "Every %d Minutes"
-msgstr "Каждые %d минут"
+msgstr "A cada %d minutos"
 
 #: ../templates/admin-page.php:17
 msgid "Settings"
-msgstr "Настройки"
+msgstr "Configurações"
 
 #: ../templates/admin-page.php:18, ../templates/admin-page.php:161
 msgid "Process"
-msgstr "Обработка"
+msgstr "Processar"
 
 #: ../templates/admin-page.php:19
 msgid "Statistics"
-msgstr "Статистика"
+msgstr "Estatísticas"
 
 #: ../templates/admin-page.php:26
 msgid "Download Settings"
-msgstr "Настройки скачивания"
+msgstr "Configurações de download"
 
 #: ../templates/admin-page.php:29
 msgid "Download Mode"
-msgstr "Режим скачивания"
+msgstr "Modo de download"
 
 #: ../templates/admin-page.php:32
 msgid "Original URL only"
-msgstr "Только оригинальный URL"
+msgstr "Apenas URL original"
 
 #: ../templates/admin-page.php:33
 msgid "Web Archive only"
-msgstr "Только Веб-Архив"
+msgstr "Apenas Web Archive"
 
 #: ../templates/admin-page.php:34
 msgid "Try original, then Web Archive"
-msgstr "Сначала оригинал, затем Веб-Архив"
+msgstr "Primeiro original, depois Web Archive"
 
 #: ../templates/admin-page.php:35
 msgid "Try Web Archive, then original"
-msgstr "Сначала Веб-Архив, затем оригинал"
+msgstr "Primeiro Web Archive, depois original"
 
 #: ../templates/admin-page.php:40
 msgid "Restore Local Missing"
-msgstr "Восстанавливать локальные"
+msgstr "Restaurar imagens locais ausentes"
 
 #: ../templates/admin-page.php:43
 msgid "Include local images (from this domain) that return 404"
-msgstr "Включать локальные изображения (с этого домена), возвращающие 404"
+msgstr "Incluir imagens locais (deste domínio) que retornam 404"
 
 #: ../templates/admin-page.php:45
 msgid ""
@@ -189,86 +189,85 @@ msgid ""
 "were previously hosted on this same domain. Uncheck if you only want to import "
 "external images from other websites and skip broken local images."
 msgstr ""
-"Оставьте включённым, если хотите восстановить ВСЕ отсутствующие изображения, "
-"включая те, которые ранее были на этом же домене. Отключите, если хотите "
-"импортировать только внешние изображения с других сайтов и пропустить битые "
-"локальные."
+"Mantenha marcado se deseja restaurar TODAS as imagens ausentes, incluindo "
+"aquelas que estavam neste mesmo domínio. Desmarque se deseja apenas importar "
+"imagens externas de outros sites e ignorar imagens locais quebradas."
 
 #: ../templates/admin-page.php:50
 msgid "If Download Fails"
-msgstr "Если скачать не удалось"
+msgstr "Se o download falhar"
 
 #: ../templates/admin-page.php:53
 msgid "Keep image unchanged"
-msgstr "Оставить изображение без изменений"
+msgstr "Manter imagem sem alterações"
 
 #: ../templates/admin-page.php:54
 msgid "Remove image from post"
-msgstr "Удалить изображение из записи"
+msgstr "Remover imagem do post"
 
 #: ../templates/admin-page.php:55
 msgid "Replace with 1x1 placeholder"
-msgstr "Заменить на заглушку 1x1"
+msgstr "Substituir por marcador 1x1"
 
 #: ../templates/admin-page.php:60
 msgid "Post Types"
-msgstr "Типы записей"
+msgstr "Tipos de conteúdo"
 
 #: ../templates/admin-page.php:86
 msgid "Select which post types to scan for external images."
-msgstr "Выберите типы записей для сканирования на внешние изображения."
+msgstr "Selecione quais tipos de conteúdo escanear em busca de imagens externas."
 
 #: ../templates/admin-page.php:91
 msgid "Naming Settings"
-msgstr "Настройки именования"
+msgstr "Configurações de nomes"
 
 #: ../templates/admin-page.php:94
 msgid "Keep Original Name"
-msgstr "Сохранять оригинальное имя"
+msgstr "Manter nome original"
 
 #: ../templates/admin-page.php:96
 msgid "Keep original filename"
-msgstr "Сохранять оригинальное имя файла"
+msgstr "Manter nome de arquivo original"
 
 #: ../templates/admin-page.php:97
 msgid ""
 "Checked: use the original filename from the URL. Unchecked: rename files using "
 "the pattern below."
 msgstr ""
-"Включено: использовать оригинальное имя файла из URL. Отключено: переименовывать"
-" файлы по шаблону ниже."
+"Marcado: usar o nome de arquivo original da URL. Desmarcado: renomear arquivos "
+"usando o padrão abaixo."
 
 #: ../templates/admin-page.php:101
 msgid "Filename Pattern"
-msgstr "Шаблон имени файла"
+msgstr "Padrão de nome de arquivo"
 
 #: ../templates/admin-page.php:104
 msgid "Tags: {title} {post_id} {index} {date} {random}"
-msgstr "Теги: {title} {post_id} {index} {date} {random}"
+msgstr "Tags: {title} {post_id} {index} {date} {random}"
 
 #: ../templates/admin-page.php:109
 msgid "Connection Settings"
-msgstr "Настройки соединения"
+msgstr "Configurações de conexão"
 
 #: ../templates/admin-page.php:112
 msgid "Download Delay"
-msgstr "Задержка скачивания"
+msgstr "Atraso de download"
 
 #: ../templates/admin-page.php:113, ../templates/admin-page.php:118
 msgid "seconds"
-msgstr "секунд"
+msgstr "segundos"
 
 #: ../templates/admin-page.php:114
 msgid "Delay between requests."
-msgstr "Задержка между запросами."
+msgstr "Atraso entre requisições."
 
 #: ../templates/admin-page.php:117
 msgid "Timeout"
-msgstr "Таймаут"
+msgstr "Tempo limite"
 
 #: ../templates/admin-page.php:119
 msgid "Request timeout. Increase if downloads fail on slow connections."
-msgstr "Таймаут запроса. Увеличьте, если загрузка не удаётся на медленных соединениях."
+msgstr "Tempo limite de requisição. Aumente se os downloads falharem em conexões lentas."
 
 #: ../templates/admin-page.php:122
 msgid "User Agent"
@@ -282,183 +281,181 @@ msgid ""
 "Trusted by thousands of users worldwide since 2017 for website recovery, "
 "migration, and SEO projects."
 msgstr ""
-"Восстанавливайте сайты из <strong>Wayback Machine</strong> с высокой точностью. "
-"Скачивайте архивные сайты, удаляйте рекламу и трекеры, оптимизируйте изображения"
-" и получайте полностью рабочую копию на бесплатной <strong>Archivarix "
-"CMS</strong>. С 2017 года тысячи пользователей по всему миру доверяют нам "
-"восстановление сайтов, миграцию и SEO-проекты."
+"Restaure sites da <strong>Wayback Machine</strong> com alta precisão. Baixe "
+"sites arquivados, remova anúncios e rastreadores, otimize imagens e obtenha "
+"uma cópia totalmente funcional com o <strong>Archivarix CMS</strong> gratuito. "
+"Utilizado por milhares de usuários em todo o mundo desde 2017 para recuperação "
+"de sites, migração e projetos de SEO."
 
 #: ../templates/admin-page.php:143
 msgid "Visit Website"
-msgstr "Посетить сайт"
+msgstr "Visitar site"
 
 #: ../templates/admin-page.php:144
 msgid "Documentation"
-msgstr "Документация"
+msgstr "Documentação"
 
 #: ../templates/admin-page.php:150
 msgid "Process Images"
-msgstr "Обработка изображений"
+msgstr "Processar imagens"
 
 #: ../templates/admin-page.php:152
 msgid "Step 1: Scan"
-msgstr "Шаг 1: Сканирование"
+msgstr "Etapa 1: Escanear"
 
 #: ../templates/admin-page.php:153
 msgid "Scan all posts and pages to find external images and missing local images."
-msgstr ""
-"Сканировать все записи и страницы для поиска внешних изображений и отсутствующих"
-" локальных."
+msgstr "Escanear todos os posts e páginas para encontrar imagens externas e imagens locais ausentes."
 
 #: ../templates/admin-page.php:154
 msgid "Start Scan"
-msgstr "Начать сканирование"
+msgstr "Iniciar escaneamento"
 
 #: ../templates/admin-page.php:158
 msgid "Step 2: Process"
-msgstr "Шаг 2: Обработка"
+msgstr "Etapa 2: Processar"
 
 #: ../templates/admin-page.php:163
 msgid "You can close this page — processing continues on the server."
-msgstr "Можно закрыть страницу — обработка продолжится на сервере."
+msgstr "Você pode fechar esta página — o processamento continua no servidor."
 
 #: ../templates/admin-page.php:168
 msgid "Background processing running..."
-msgstr "Выполняется фоновая обработка..."
+msgstr "Processamento em segundo plano em execução..."
 
 #: ../templates/admin-page.php:169
 msgid "Stop"
-msgstr "Остановить"
+msgstr "Parar"
 
 #: ../templates/admin-page.php:179
 msgid "Import Statistics"
-msgstr "Статистика импорта"
+msgstr "Estatísticas de importação"
 
 #: ../templates/admin-page.php:182
 msgid "New Downloads"
-msgstr "Новые загрузки"
+msgstr "Novos downloads"
 
 #: ../templates/admin-page.php:183
 msgid "Cached/Existing"
-msgstr "Из кеша/Существующие"
+msgstr "Em cache/Existentes"
 
 #: ../templates/admin-page.php:184
 msgid "Failed"
-msgstr "Не удалось"
+msgstr "Falharam"
 
 #: ../templates/admin-page.php:185
 msgid "Removed"
-msgstr "Удалено"
+msgstr "Removidos"
 
 #: ../templates/admin-page.php:186
 msgid "Placeholder"
-msgstr "Заглушка"
+msgstr "Marcador"
 
 #: ../templates/admin-page.php:188
 msgid "Reset Statistics"
-msgstr "Сбросить статистику"
+msgstr "Redefinir estatísticas"
 
 #: ../templates/admin-page.php:190
 msgid "Import Logs"
-msgstr "Логи импорта"
+msgstr "Registros de importação"
 
 #: ../templates/admin-page.php:192
 msgid "Sort:"
-msgstr "Сортировка:"
+msgstr "Ordenar:"
 
 #: ../templates/admin-page.php:192
 msgid "Newest first"
-msgstr "Сначала новые"
+msgstr "Mais recentes primeiro"
 
 #: ../templates/admin-page.php:192
 msgid "Oldest first"
-msgstr "Сначала старые"
+msgstr "Mais antigos primeiro"
 
 #: ../templates/admin-page.php:193
 msgid "Refresh"
-msgstr "Обновить"
+msgstr "Atualizar"
 
 #: ../templates/admin-page.php:194
 msgid "Download Logs"
-msgstr "Скачать логи"
+msgstr "Baixar registros"
 
 #: ../templates/admin-page.php:195
 msgid "Delete Selected"
-msgstr "Удалить выбранные"
+msgstr "Excluir selecionados"
 
 #: ../templates/admin-page.php:196
 msgid "Delete All"
-msgstr "Удалить все"
+msgstr "Excluir todos"
 
 #: ../templates/admin-page.php:199
 msgid "Date"
-msgstr "Дата"
+msgstr "Data"
 
 #: ../templates/admin-page.php:199
 msgid "Post"
-msgstr "Запись"
+msgstr "Post"
 
 #: ../templates/admin-page.php:199
 msgid "Image"
-msgstr "Изображение"
+msgstr "Imagem"
 
 #: ../templates/admin-page.php:199
 msgid "Result"
-msgstr "Результат"
+msgstr "Resultado"
 
 #: ../templates/admin-page.php:199
 msgid "Source/Action"
-msgstr "Источник/Действие"
+msgstr "Fonte/Ação"
 
 #: ../templates/admin-page.php:200
 msgid "Click Refresh to load logs"
-msgstr "Нажмите Обновить для загрузки логов"
+msgstr "Clique em Atualizar para carregar os registros"
 
 #: ../archivarix-external-images-importer.php
 msgid "Scan Complete"
-msgstr "Сканирование завершено"
+msgstr "Varredura concluída"
 
 #: ../archivarix-external-images-importer.php
 msgid "Posts"
-msgstr "Записи"
+msgstr "Posts"
 
 #: ../archivarix-external-images-importer.php
 msgid "Images to process"
-msgstr "Изображений к обработке"
+msgstr "Imagens a processar"
 
 #: ../archivarix-external-images-importer.php
 msgid "External"
-msgstr "Внешние"
+msgstr "Externas"
 
 #: ../archivarix-external-images-importer.php
 msgid "Local 404"
-msgstr "Локальные 404"
+msgstr "Locais 404"
 
 #: ../archivarix-external-images-importer.php
 msgid "Invalid URLs"
-msgstr "Невалидные URL"
+msgstr "URLs inválidas"
 
 #: ../archivarix-external-images-importer.php
 msgid "Error loading logs"
-msgstr "Ошибка загрузки логов"
+msgstr "Erro ao carregar os registros"
 
 #: ../archivarix-external-images-importer.php
 msgid "Delete ALL logs?"
-msgstr "Удалить ВСЕ логи?"
+msgstr "Excluir TODOS os registros?"
 
 #. translators: %1$d: current page number, %2$d: total pages
 #: ../archivarix-external-images-importer.php
 msgid "Page %1$d of %2$d"
-msgstr "Страница %1$d из %2$d"
+msgstr "Página %1$d de %2$d"
 
 #: ../archivarix-external-images-importer.php
 msgid "Web Archive is currently unavailable. Downloads will continue from original sources only."
-msgstr "Веб-архив временно недоступен. Загрузка продолжится только из оригинальных источников."
+msgstr "Web Archive está indisponível no momento. Os downloads continuarão apenas a partir das fontes originais."
 
 #: ../archivarix-external-images-importer.php
 msgid "Next request will be delayed by 10 seconds."
-msgstr "Следующий запрос будет задержан на 10 секунд."
+msgstr "A próxima solicitação será atrasada em 10 segundos."
 
 #: ../archivarix-external-images-importer.php
 msgid "Too many requests. Web Archive access has been disabled. Downloads will continue from original sources only."
-msgstr "Слишком много запросов. Доступ к веб-архиву отключён. Загрузка продолжится только из оригинальных источников."
+msgstr "Muitas solicitações. O acesso ao Web Archive foi desativado. Os downloads continuarão apenas a partir das fontes originais."

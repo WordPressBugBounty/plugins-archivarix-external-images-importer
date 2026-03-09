@@ -381,3 +381,52 @@ msgstr ""
 #: ../templates/admin-page.php:200
 msgid "Click Refresh to load logs"
 msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Scan Complete"
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Posts"
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Images to process"
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "External"
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Local 404"
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Invalid URLs"
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Error loading logs"
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Delete ALL logs?"
+msgstr ""
+
+#. translators: %1$d: current page number, %2$d: total pages
+#: ../archivarix-external-images-importer.php
+msgid "Page %1$d of %2$d"
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Web Archive is currently unavailable. Downloads will continue from original sources only."
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Next request will be delayed by 10 seconds."
+msgstr ""
+
+#: ../archivarix-external-images-importer.php
+msgid "Too many requests. Web Archive access has been disabled. Downloads will continue from original sources only."
+msgstr ""

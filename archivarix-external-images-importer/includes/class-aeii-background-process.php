@@ -450,17 +450,17 @@ abstract class AEII_Background_Process extends AEII_Async_Request {
 		if ( $this->is_process_running() ) {
 			// Reschedule for later.
 			$this->schedule_event();
-			exit;
+			wp_die();
 		}
 
 		if ( $this->is_queue_empty() ) {
 			$this->clear_scheduled_event();
-			exit;
+			wp_die();
 		}
 
 		$this->handle();
 
-		exit;
+		wp_die();
 	}
 
 	/**

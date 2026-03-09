@@ -3,7 +3,7 @@
  * Plugin Name: Archivarix External Images Importer
  * Plugin URI: https://archivarix.com/en/wordpress/
  * Description: Import external images in posts and pages from external sources or Web Archive if original source is unavailable.
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: Archivarix
  * Author URI: https://archivarix.com
  * License: GPLv3 or later
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AEII_VERSION', '2.0.1' );
+define( 'AEII_VERSION', '2.0.2' );
 define( 'AEII_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AEII_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AEII_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -257,13 +257,27 @@ class Archivarix_External_Images_Importer {
 				'nonce'    => wp_create_nonce( 'aeii_nonce' ),
 				'strings'  => array(
 					'scanning'            => __( 'Scanning...', 'archivarix-external-images-importer' ),
+					'start_scan'          => __( 'Start Scan', 'archivarix-external-images-importer' ),
+					'scan_complete'       => __( 'Scan Complete', 'archivarix-external-images-importer' ),
+					'posts'               => __( 'Posts', 'archivarix-external-images-importer' ),
+					'images_to_process'   => __( 'Images to process', 'archivarix-external-images-importer' ),
+					'external'            => __( 'External', 'archivarix-external-images-importer' ),
+					'local_404'           => __( 'Local 404', 'archivarix-external-images-importer' ),
+					'invalid_urls'        => __( 'Invalid URLs', 'archivarix-external-images-importer' ),
 					'error'               => __( 'Error', 'archivarix-external-images-importer' ),
+					'error_loading_logs'  => __( 'Error loading logs', 'archivarix-external-images-importer' ),
 					'confirm_process'     => __( 'Start processing?', 'archivarix-external-images-importer' ),
 					'confirm_reset'       => __( 'Reset all statistics and logs?', 'archivarix-external-images-importer' ),
 					'confirm_delete_logs' => __( 'Delete selected logs?', 'archivarix-external-images-importer' ),
+					'confirm_delete_all'  => __( 'Delete ALL logs?', 'archivarix-external-images-importer' ),
 					'no_logs'             => __( 'No logs yet', 'archivarix-external-images-importer' ),
 					'loading'             => __( 'Loading...', 'archivarix-external-images-importer' ),
 					'copied'              => __( 'Copied!', 'archivarix-external-images-importer' ),
+					/* translators: %1$d: current page, %2$d: total pages */
+					'page_of'             => __( 'Page %1$d of %2$d', 'archivarix-external-images-importer' ),
+					'archive_error_500'   => __( 'Web Archive is currently unavailable. Downloads will continue from original sources only.', 'archivarix-external-images-importer' ),
+					'archive_429_retry'   => __( 'Next request will be delayed by 10 seconds.', 'archivarix-external-images-importer' ),
+					'archive_429_blocked' => __( 'Too many requests. Web Archive access has been disabled. Downloads will continue from original sources only.', 'archivarix-external-images-importer' ),
 				),
 			)
 		);
@@ -374,15 +388,22 @@ class Archivarix_External_Images_Importer {
 	 */
 	private function extract_images( $content, $site_host, $check_local = true ) {
 		$images = array();
-		// Extract src attributes.
-		preg_match_all( '/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/i', $content, $matches );
+		// Extract src attributes (use \ssrc= to avoid matching data-src, data-lazy-src, etc.).
+		preg_match_all( '/<img[^>]*\ssrc=["\']([^"\']+)["\'][^>]*>/i', $content, $matches );
 
 		foreach ( $matches[1] as $url ) {
 			$this->add_image_to_list( $images, $url, $site_host, $check_local );
 		}
 
-		// Extract srcset attributes.
-		preg_match_all( '/<img[^>]+srcset=["\']([^"\']+)["\'][^>]*>/i', $content, $srcset_matches );
+		// Extract lazy-loading attributes (data-src, data-lazy-src, data-original).
+		preg_match_all( '/<img[^>]*\sdata-(?:lazy-)?(?:src|original)=["\']([^"\']+)["\'][^>]*>/i', $content, $lazy_matches );
+
+		foreach ( $lazy_matches[1] as $url ) {
+			$this->add_image_to_list( $images, $url, $site_host, $check_local );
+		}
+
+		// Extract srcset attributes (use \ssrcset= to avoid matching data-srcset, etc.).
+		preg_match_all( '/<img[^>]*\ssrcset=["\']([^"\']+)["\'][^>]*>/i', $content, $srcset_matches );
 
 		foreach ( $srcset_matches[1] as $srcset ) {
 			// Parse srcset: "image1.jpg 1x, image2.jpg 2x" or "image1.jpg 480w, image2.jpg 800w".
@@ -409,7 +430,8 @@ class Archivarix_External_Images_Importer {
 	 * @param bool   $check_local Whether to check local images.
 	 */
 	private function add_image_to_list( &$images, $url, $site_host, $check_local ) {
-		if ( strpos( $url, 'data:' ) === 0 ) {
+		// Skip data URIs (with or without "data:" scheme prefix).
+		if ( strpos( $url, 'data:' ) === 0 || preg_match( '/^image\/[a-z]/i', $url ) ) {
 			return;
 		}
 		if ( isset( $images[ $url ] ) ) {
@@ -1120,7 +1142,8 @@ class Archivarix_External_Images_Importer {
 			++$i;
 		}
 
-		if ( ! file_put_contents( $filepath, file_get_contents( $downloaded['file'] ) ) ) {
+		$filesystem = $this->init_filesystem();
+		if ( ! $filesystem || ! $filesystem->copy( $downloaded['file'], $filepath ) ) {
 			wp_delete_file( $downloaded['file'] );
 			return array(
 				'success'      => false,
@@ -1430,6 +1453,7 @@ class Archivarix_External_Images_Importer {
 			array(
 				'timeout'     => $options['timeout'],
 				'user-agent'  => $options['user_agent'],
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.wp_remote_get_sslverify -- Downloading images from arbitrary external URLs that may have invalid/expired certificates.
 				'sslverify'   => false,
 				'redirection' => 5,
 			)
@@ -1464,8 +1488,9 @@ class Archivarix_External_Images_Importer {
 			) : false;
 		}
 
-		$tmp = wp_tempnam();
-		if ( ! file_put_contents( $tmp, $body ) ) {
+		$tmp        = wp_tempnam();
+		$filesystem = $this->init_filesystem();
+		if ( ! $filesystem || ! $filesystem->put_contents( $tmp, $body ) ) {
 			return $return_error_code ? array(
 				'error'   => 0,
 				'message' => 'Could not save temp file',
@@ -1557,15 +1582,6 @@ class Archivarix_External_Images_Importer {
 			return 'image/tiff';
 		}
 
-		// SVG: Check for XML/SVG content (text-based).
-		$trimmed = ltrim( $data );
-		if ( strpos( $trimmed, '<?xml' ) === 0 || strpos( $trimmed, '<svg' ) === 0 ) {
-			// Additional check to ensure it's really SVG.
-			if ( stripos( $data, '<svg' ) !== false ) {
-				return 'image/svg+xml';
-			}
-		}
-
 		// AVIF: ....ftypavif or ....ftypavis.
 		if ( substr( $data, 4, 4 ) === 'ftyp' ) {
 			$brand = substr( $data, 8, 4 );
@@ -1593,7 +1609,7 @@ class Archivarix_External_Images_Importer {
 			return true; // Missing file = treat as placeholder.
 		}
 
-		$size = @getimagesize( $filepath );
+		$size = wp_getimagesize( $filepath );
 
 		// If getimagesize fails, it's not a valid image - treat as placeholder.
 		if ( false === $size ) {
@@ -1673,7 +1689,7 @@ class Archivarix_External_Images_Importer {
 	 * @return string Content with image removed.
 	 */
 	private function remove_image_tag( $content, $url ) {
-		return preg_replace( '/<img[^>]*src=["\']' . preg_quote( $url, '/' ) . '["\'][^>]*>/i', '', $content );
+		return preg_replace( '/<img[^>]*\ssrc=["\']' . preg_quote( $url, '/' ) . '["\'][^>]*>/i', '', $content );
 	}
 
 	/**
@@ -1744,6 +1760,26 @@ class Archivarix_External_Images_Importer {
 	}
 
 	/**
+	 * Initialize WP_Filesystem
+	 *
+	 * @return WP_Filesystem_Base|false
+	 */
+	private function init_filesystem() {
+		global $wp_filesystem;
+
+		if ( $wp_filesystem ) {
+			return $wp_filesystem;
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		if ( WP_Filesystem() ) {
+			return $wp_filesystem;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Get logs directory path
 	 *
 	 * @return string
@@ -1764,11 +1800,14 @@ class Archivarix_External_Images_Importer {
 		if ( ! file_exists( $dir ) ) {
 			wp_mkdir_p( $dir );
 
-			// Create .htaccess to deny direct access.
-			file_put_contents( $dir . '/.htaccess', "Order deny,allow\nDeny from all" );
+			$filesystem = $this->init_filesystem();
+			if ( $filesystem ) {
+				// Create .htaccess to deny direct access.
+				$filesystem->put_contents( $dir . '/.htaccess', "Order deny,allow\nDeny from all" );
 
-			// Create index.php for additional protection.
-			file_put_contents( $dir . '/index.php', '<?php // Silence is golden' );
+				// Create index.php for additional protection.
+				$filesystem->put_contents( $dir . '/index.php', '<?php // Silence is golden' );
+			}
 		}
 
 		return is_dir( $dir ) && wp_is_writable( $dir );
@@ -1803,6 +1842,7 @@ class Archivarix_External_Images_Importer {
 		$log_file = $this->get_log_file();
 		$line     = wp_json_encode( $entry, JSON_UNESCAPED_UNICODE ) . "\n";
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- FILE_APPEND not supported by WP_Filesystem.
 		file_put_contents( $log_file, $line, FILE_APPEND | LOCK_EX );
 
 		// Run rotation check occasionally (1% chance per log write).
@@ -1891,6 +1931,7 @@ class Archivarix_External_Images_Importer {
 	 * @param int    $max_entries Maximum entries to keep.
 	 */
 	private function truncate_log_file( $file, $max_entries ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file -- Reading log lines with flags not available in WP_Filesystem.
 		$lines = file( $file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
 		if ( ! $lines || count( $lines ) <= $max_entries ) {
 			return;
@@ -1898,7 +1939,10 @@ class Archivarix_External_Images_Importer {
 
 		// Keep only the newest entries (last N lines).
 		$lines = array_slice( $lines, -$max_entries );
-		file_put_contents( $file, implode( "\n", $lines ) . "\n", LOCK_EX );
+		$filesystem = $this->init_filesystem();
+		if ( $filesystem ) {
+			$filesystem->put_contents( $file, implode( "\n", $lines ) . "\n" );
+		}
 	}
 
 	/**
@@ -1998,7 +2042,10 @@ class Archivarix_External_Images_Importer {
 				if ( empty( $new_lines ) ) {
 					wp_delete_file( $file );
 				} else {
-					file_put_contents( $file, implode( "\n", $new_lines ) . "\n", LOCK_EX );
+					$filesystem = $this->init_filesystem();
+					if ( $filesystem ) {
+						$filesystem->put_contents( $file, implode( "\n", $new_lines ) . "\n" );
+					}
 				}
 			}
 		}
@@ -2105,7 +2152,7 @@ class Archivarix_External_Images_Importer {
 
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSV output with proper Content-Type header
 		echo $csv;
-		exit;
+		wp_die();
 	}
 
 	/**
@@ -2154,6 +2201,10 @@ class Archivarix_External_Images_Importer {
 		// Count images to process (not in cache).
 		$images_to_process = array();
 		foreach ( $scan as $img ) {
+			// Skip invalid URLs (data URIs, malformed URLs, etc.).
+			if ( ! empty( $img['is_invalid'] ) ) {
+				continue;
+			}
 			// Skip if already in cache (successfully processed or failed).
 			if ( isset( $url_cache[ $img['url'] ] ) ) {
 				continue;
@@ -2309,7 +2360,7 @@ register_activation_hook(
 	function () {
 		if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
-			wp_die( 'PHP 7.4+ required' );
+			wp_die( esc_html__( 'This plugin requires PHP 7.4 or higher.', 'archivarix-external-images-importer' ) );
 		}
 	}
 );
