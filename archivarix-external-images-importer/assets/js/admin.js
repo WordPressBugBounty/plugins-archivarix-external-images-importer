@@ -2,7 +2,7 @@
     'use strict';
 
     let backgroundRunning = false;
-    let logsPage = 1, logsSort = 'desc';
+    let logsPage = 1, logsSort = 'desc', logsFilter = 'all';
 
     $(document).ready(function() {
         initTabs();
@@ -221,7 +221,13 @@
             logsPage = 1;
             loadLogs();
         });
-        
+
+        $('#aeii-logs-filter').on('change', function() {
+            logsFilter = $(this).val();
+            logsPage = 1;
+            loadLogs();
+        });
+
         $('#aeii-refresh-logs-btn').on('click', loadLogs);
         
         $('#aeii-logs-select-all').on('change', function() {
@@ -263,6 +269,7 @@
             action: 'aeii_get_logs',
             nonce: aeiiData.nonce,
             sort: logsSort,
+            filter: logsFilter,
             page: logsPage
         }, function(r) {
             if (r.success) {

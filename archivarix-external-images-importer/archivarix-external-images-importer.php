@@ -3,13 +3,13 @@
  * Plugin Name: Archivarix External Images Importer
  * Plugin URI: https://archivarix.com/en/wordpress/
  * Description: Import external images in posts and pages from external sources or Web Archive if original source is unavailable.
- * Version: 2.0.3
+ * Version: 2.1.0
  * Author: Archivarix
  * Author URI: https://archivarix.com
  * License: GPLv3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Requires at least: 6.0
- * Tested up to: 6.9
+ * Tested up to: 7.0
  * Requires PHP: 7.4
  * Text Domain: archivarix-external-images-importer
  * Domain Path: /languages
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'AEII_VERSION', '2.0.3' );
+define( 'AEII_VERSION', '2.1.0' );
 define( 'AEII_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'AEII_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'AEII_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
@@ -31,6 +31,9 @@ define( 'AEII_MIN_ARCHIVE_DELAY', 1 ); // Minimum delay for Web Archive requests
 require_once AEII_PLUGIN_DIR . 'includes/class-aeii-async-request.php';
 require_once AEII_PLUGIN_DIR . 'includes/class-aeii-background-process.php';
 require_once AEII_PLUGIN_DIR . 'includes/class-aeii-images-process.php';
+
+// WordPress Abilities API / MCP integration (WordPress 7.0+, no-op on older versions).
+require_once AEII_PLUGIN_DIR . 'includes/class-aeii-abilities.php';
 
 /**
  * Main plugin class for Archivarix External Images Importer.
@@ -93,6 +96,9 @@ class Archivarix_External_Images_Importer {
 		add_action( 'wp_ajax_aeii_get_queue_status', array( $this, 'ajax_get_queue_status' ) );
 		add_action( 'wp_ajax_aeii_start_background', array( $this, 'ajax_start_background' ) );
 		add_action( 'wp_ajax_aeii_stop_background', array( $this, 'ajax_stop_background' ) );
+
+		// Register Abilities API capabilities (exposed to MCP on WordPress 7.0+).
+		AEII_Abilities::init();
 	}
 
 	/**
@@ -308,6 +314,24 @@ class Archivarix_External_Images_Importer {
 			wp_send_json_error( array( 'message' => 'Permission denied' ) );
 		}
 
+		wp_send_json_success( $this->scan_for_images() );
+	}
+
+	/**
+	 * Scan posts/pages for external and missing images.
+	 *
+	 * Stores results in the `aeii_scan_results` option and resets URL cache/locks.
+	 * Shared by the AJAX handler and the `archivarix/scan-images` ability.
+	 *
+	 * @return array {
+	 *     @type int $total_posts          Number of posts scanned.
+	 *     @type int $total_images         Total images found.
+	 *     @type int $external_images      External images to import.
+	 *     @type int $local_missing_images Local (404) images to restore.
+	 *     @type int $invalid_urls         Skipped invalid URLs.
+	 * }
+	 */
+	public function scan_for_images() {
 		$options       = $this->get_options();
 		$restore_local = ! empty( $options['restore_local'] );
 		$post_types    = ! empty( $options['post_types'] ) ? $options['post_types'] : array( 'post', 'page' );
@@ -367,14 +391,12 @@ class Archivarix_External_Images_Importer {
 		$inv = count( array_filter( $all_images, fn( $i ) => ! empty( $i['is_invalid'] ) ) );
 
 		// Don't include images array in response - it's already saved and can be huge.
-		wp_send_json_success(
-			array(
-				'total_posts'          => $total_posts,
-				'total_images'         => count( $all_images ),
-				'external_images'      => $ext,
-				'local_missing_images' => $loc,
-				'invalid_urls'         => $inv,
-			)
+		return array(
+			'total_posts'          => $total_posts,
+			'total_images'         => count( $all_images ),
+			'external_images'      => $ext,
+			'local_missing_images' => $loc,
+			'invalid_urls'         => $inv,
 		);
 	}
 
@@ -1732,6 +1754,19 @@ class Archivarix_External_Images_Importer {
 			wp_send_json_error( array( 'message' => 'Permission denied' ) );
 		}
 
+		wp_send_json_success( $this->reset_all() );
+	}
+
+	/**
+	 * Reset all statistics, scan results, logs, URL cache and locks.
+	 *
+	 * Shared by the AJAX handler and the `archivarix/reset-statistics` ability.
+	 *
+	 * @return array {
+	 *     @type bool $reset Always true.
+	 * }
+	 */
+	public function reset_all() {
 		delete_option( 'aeii_success_count' );
 		delete_option( 'aeii_cached_count' );
 		delete_option( 'aeii_failed_count' );
@@ -1760,7 +1795,7 @@ class Archivarix_External_Images_Importer {
 			)
 		);
 
-		wp_send_json_success();
+		return array( 'reset' => true );
 	}
 
 	/**
@@ -2067,11 +2102,24 @@ class Archivarix_External_Images_Importer {
 		}
 
 		$sort     = isset( $_POST['sort'] ) ? sanitize_text_field( wp_unslash( $_POST['sort'] ) ) : 'desc';
+		$filter   = isset( $_POST['filter'] ) ? sanitize_key( wp_unslash( $_POST['filter'] ) ) : 'all';
 		$page     = isset( $_POST['page'] ) ? absint( $_POST['page'] ) : 1;
 		$page     = max( 1, $page );
 		$per_page = 30;
 
 		$logs = $this->read_all_logs( $sort );
+
+		// Filter by outcome (mirrors the statistics cards).
+		if ( 'all' !== $filter ) {
+			$logs = array_values(
+				array_filter(
+					$logs,
+					function ( $entry ) use ( $filter ) {
+						return $this->log_matches_filter( $entry, $filter );
+					}
+				)
+			);
+		}
 
 		$total  = count( $logs );
 		$pages  = max( 1, ceil( $total / $per_page ) );
@@ -2083,8 +2131,40 @@ class Archivarix_External_Images_Importer {
 				'total'       => $total,
 				'page'        => $page,
 				'total_pages' => $pages,
+				'filter'      => $filter,
 			)
 		);
+	}
+
+	/**
+	 * Check whether a log entry matches an outcome filter.
+	 *
+	 * Filters mirror the statistics cards. The cached/failed actions may carry a
+	 * " (cached)" suffix (e.g. "removed (cached)"), which is normalized away.
+	 *
+	 * @param array  $entry  Log entry.
+	 * @param string $filter One of: downloaded, cached, failed, removed, placeholder.
+	 * @return bool
+	 */
+	private function log_matches_filter( $entry, $filter ) {
+		$success = ! empty( $entry['success'] );
+		$action  = isset( $entry['action'] ) ? (string) $entry['action'] : '';
+		$base    = trim( str_replace( '(cached)', '', $action ) );
+
+		switch ( $filter ) {
+			case 'downloaded':
+				return $success && 'downloaded' === $base;
+			case 'cached':
+				return $success && ( 'cached' === $base || 'existing' === $base );
+			case 'failed':
+				return ! $success;
+			case 'removed':
+				return 'removed' === $base;
+			case 'placeholder':
+				return 'placeholder' === $base;
+			default:
+				return true;
+		}
 	}
 
 	/**
@@ -2188,9 +2268,31 @@ class Archivarix_External_Images_Importer {
 			wp_send_json_error( array( 'message' => 'Permission denied' ) );
 		}
 
+		$result = $this->start_import();
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * Queue and dispatch the background import for scanned images.
+	 *
+	 * Shared by the AJAX handler and the `archivarix/start-import` ability.
+	 * Requires a prior scan (see {@see scan_for_images()}).
+	 *
+	 * @return array|WP_Error {
+	 *     @type string $message   Present when all images were already processed.
+	 *     @type int    $remaining Number of images queued for processing.
+	 * } Or WP_Error `aeii_no_images` when no scan results exist.
+	 */
+	public function start_import() {
 		$scan = get_option( 'aeii_scan_results', array() );
 		if ( empty( $scan ) ) {
-			wp_send_json_error( array( 'message' => 'No images. Run scan first.' ) );
+			return new WP_Error(
+				'aeii_no_images',
+				__( 'No images. Run scan first.', 'archivarix-external-images-importer' )
+			);
 		}
 
 		// Cancel any existing process.
@@ -2224,7 +2326,7 @@ class Archivarix_External_Images_Importer {
 			// All images already processed.
 			update_option( 'aeii_queue_position', count( $scan ) );
 			update_option( 'aeii_background_running', false );
-			wp_send_json_success( array( 'message' => 'All images already processed' ) );
+			return array( 'message' => 'All images already processed' );
 		}
 
 		// Set position to number of already processed images.
@@ -2246,7 +2348,7 @@ class Archivarix_External_Images_Importer {
 		// Dispatch to start processing.
 		$this->background_process->dispatch();
 
-		wp_send_json_success( array( 'remaining' => count( $images_to_process ) ) );
+		return array( 'remaining' => count( $images_to_process ) );
 	}
 
 	/**
@@ -2260,11 +2362,24 @@ class Archivarix_External_Images_Importer {
 			wp_send_json_error( array( 'message' => 'Permission denied' ) );
 		}
 
+		wp_send_json_success( $this->stop_import() );
+	}
+
+	/**
+	 * Cancel the running background import.
+	 *
+	 * Shared by the AJAX handler and the `archivarix/stop-import` ability.
+	 *
+	 * @return array {
+	 *     @type bool $stopped Always true.
+	 * }
+	 */
+	public function stop_import() {
 		// Cancel the background process.
 		$this->background_process->cancel_process();
 		update_option( 'aeii_background_running', false );
 
-		wp_send_json_success();
+		return array( 'stopped' => true );
 	}
 
 	/**
@@ -2278,6 +2393,23 @@ class Archivarix_External_Images_Importer {
 			wp_send_json_error( array( 'message' => 'Permission denied' ) );
 		}
 
+		wp_send_json_success( $this->get_queue_status_data() );
+	}
+
+	/**
+	 * Get current background import progress and statistics.
+	 *
+	 * Shared by the AJAX handler and the `archivarix/get-status` ability.
+	 *
+	 * @return array {
+	 *     @type int   $total         Total images in the current scan.
+	 *     @type int   $position      Images processed so far.
+	 *     @type bool  $running       Whether the background process is active.
+	 *     @type array $statistics    Success/cached/failed/removed/placeholder counts.
+	 *     @type array $archive_error Web Archive error status, if any.
+	 * }
+	 */
+	public function get_queue_status_data() {
 		$scan  = get_option( 'aeii_scan_results', array() );
 		$total = count( $scan );
 
@@ -2309,14 +2441,12 @@ class Archivarix_External_Images_Importer {
 			update_option( 'aeii_queue_position', $position );
 		}
 
-		wp_send_json_success(
-			array(
-				'total'         => $total,
-				'position'      => $position,
-				'running'       => $running,
-				'statistics'    => $this->get_statistics(),
-				'archive_error' => $this->get_archive_error_status(),
-			)
+		return array(
+			'total'         => $total,
+			'position'      => $position,
+			'running'       => $running,
+			'statistics'    => $this->get_statistics(),
+			'archive_error' => $this->get_archive_error_status(),
 		);
 	}
 

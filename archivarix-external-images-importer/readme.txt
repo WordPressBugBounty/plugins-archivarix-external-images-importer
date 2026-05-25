@@ -2,9 +2,9 @@
 Contributors: archivarix
 Tags: images, import, wayback, archive, media
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.0.3
+Stable tag: 2.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -26,9 +26,10 @@ You can choose what to do with images that could not be downloaded:
 * Remove image from post completely
 * Replace with 1x1 pixel placeholder
 
-= Key Features in Version 2.0 =
+= Key Features =
 
-* Full compatibility with WordPress 6.9
+* Full compatibility with WordPress 7.0
+* AI-ready: WordPress Abilities API / MCP integration (WordPress 7.0+) so AI agents can scan and import images
 * Modern AJAX interface with real-time progress
 * Background processing - you can close the browser while processing continues
 * Detailed import statistics and logs with CSV export
@@ -63,7 +64,11 @@ For more information, visit the [plugin documentation](https://archivarix.com/en
 
 = What WordPress versions are supported? =
 
-The plugin requires WordPress 6.0 or higher. Tested up to version 6.9.
+The plugin requires WordPress 6.0 or higher. Tested up to version 7.0.
+
+= Can I control the plugin with an AI assistant (MCP)? =
+
+Yes. On WordPress 7.0+ the plugin registers its capabilities through the core Abilities API (scan for images, start/stop import, check status and statistics, reset). When the WordPress MCP Adapter is active, these become MCP tools that AI agents such as Claude Desktop, Claude Code, Cursor, and VS Code can discover and call. All abilities require the `manage_options` capability, exactly like the admin interface. On older WordPress versions this feature is inactive and the plugin works as before.
 
 = What PHP version is required? =
 
@@ -89,9 +94,16 @@ Yes! Processing runs in the background on the server. You can close the browser 
 
 1. Settings page with full control over plugin behavior
 2. Process interface with real-time progress bar
-3. Statistics panel with detailed import information and logs
+3. Statistics panel with import statistics and logs filterable by outcome
 
 == Changelog ==
+
+= 2.1.0 (2026-05-24) =
+* Added WordPress 7.0 support (Tested up to 7.0)
+* New: filter import logs by outcome (Downloaded, Cached/Existing, Failed, Removed, Placeholder)
+* New: WordPress Abilities API integration. The plugin registers its capabilities (scan, start/stop import, status, statistics, reset) as abilities
+* New: MCP-ready. With the WordPress MCP Adapter installed, these abilities are exposed as MCP tools, so AI agents (Claude Desktop, Claude Code, Cursor, VS Code) can scan and import images. No extra dependencies bundled; gracefully no-ops on WordPress < 7.0
+* Refactored AJAX handlers to share a single logic layer with the new abilities
 
 = 2.0.3 (2026-03-09) =
 * Fixed local 404 detection when site uses mixed http/https URLs
